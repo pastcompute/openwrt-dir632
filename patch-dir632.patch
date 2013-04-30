@@ -1,5 +1,5 @@
 diff --git a/target/linux/ar71xx/base-files/etc/diag.sh b/target/linux/ar71xx/base-files/etc/diag.sh
-index c107f41..fa0c476 100755
+index 708e2c5..2afd4c6 100755
 --- a/target/linux/ar71xx/base-files/etc/diag.sh
 +++ b/target/linux/ar71xx/base-files/etc/diag.sh
 @@ -47,6 +47,9 @@ get_status_led() {
@@ -30,10 +30,10 @@ index afeae42..e023ba8 100755
  dir-825-c1)
  	ucidef_set_led_usbdev "usb" "USB" "d-link:blue:usb" "1-1"
 diff --git a/target/linux/ar71xx/base-files/etc/uci-defaults/02_network b/target/linux/ar71xx/base-files/etc/uci-defaults/02_network
-index 0329ea5..9bd2f07 100755
+index ca58a39..13b4a55 100755
 --- a/target/linux/ar71xx/base-files/etc/uci-defaults/02_network
 +++ b/target/linux/ar71xx/base-files/etc/uci-defaults/02_network
-@@ -214,6 +214,14 @@ wpe72)
+@@ -216,6 +216,14 @@ wpe72)
  	ucidef_set_interfaces_lan_wan "eth1" "eth0"
  	;;
  
@@ -48,11 +48,23 @@ index 0329ea5..9bd2f07 100755
  ap121 |\
  ap121-mini |\
  ap96 |\
+diff --git a/target/linux/ar71xx/base-files/etc/uci-defaults/03_network-switchX-migration b/target/linux/ar71xx/base-files/etc/uci-defaults/03_network-switchX-migration
+index 718a924..3bf74fe 100755
+--- a/target/linux/ar71xx/base-files/etc/uci-defaults/03_network-switchX-migration
++++ b/target/linux/ar71xx/base-files/etc/uci-defaults/03_network-switchX-migration
+@@ -57,6 +57,7 @@ ap121-mini|\
+ ap96|\
+ airrouter|\
+ dir-600-a1|\
++dir-632-a1|\
+ dir-615-c1|\
+ dir-615-e4|\
+ ja76pf|\
 diff --git a/target/linux/ar71xx/base-files/lib/ar71xx.sh b/target/linux/ar71xx/base-files/lib/ar71xx.sh
-index a9e063b..cb8b642 100755
+index b7056f2..2a15923 100755
 --- a/target/linux/ar71xx/base-files/lib/ar71xx.sh
 +++ b/target/linux/ar71xx/base-files/lib/ar71xx.sh
-@@ -219,6 +219,9 @@ ar71xx_board_detect() {
+@@ -222,6 +222,9 @@ ar71xx_board_detect() {
  	*"DIR-615 rev. E4")
  		name="dir-615-e4"
  		;;
@@ -63,7 +75,7 @@ index a9e063b..cb8b642 100755
  		name="dir-825-b1"
  		;;
 diff --git a/target/linux/ar71xx/base-files/lib/upgrade/platform.sh b/target/linux/ar71xx/base-files/lib/upgrade/platform.sh
-index 8f2f610..7e7d05d 100755
+index 85e9d61..1b82d38 100755
 --- a/target/linux/ar71xx/base-files/lib/upgrade/platform.sh
 +++ b/target/linux/ar71xx/base-files/lib/upgrade/platform.sh
 @@ -108,6 +108,7 @@ platform_check_image() {
@@ -75,10 +87,10 @@ index 8f2f610..7e7d05d 100755
  	dir-835-a1 | \
  	ew-dorin | \
 diff --git a/target/linux/ar71xx/config-3.8 b/target/linux/ar71xx/config-3.8
-index 847b9a5..883fe88 100644
+index 32393fb..2393f7e 100644
 --- a/target/linux/ar71xx/config-3.8
 +++ b/target/linux/ar71xx/config-3.8
-@@ -2,6 +2,25 @@ CONFIG_AG71XX=y
+@@ -2,6 +2,27 @@ CONFIG_AG71XX=y
  CONFIG_AG71XX_AR8216_SUPPORT=y
  # CONFIG_AG71XX_DEBUG is not set
  # CONFIG_AG71XX_DEBUG_FS is not set
@@ -89,11 +101,10 @@ index 847b9a5..883fe88 100644
 +# CONFIG_AG7240_GE0_RGMII is not set
 +CONFIG_AG7240_GE1_IS_CONNECTED=y
 +CONFIG_AG7240_GE1_MII=y
-+CONFIG_AG7240_LEN_PER_TX_DS=1536
 +CONFIG_AG7240_MAC_LOCATION=0x1fff0000
 +CONFIG_AG7240_NUMBER_RX_PKTS=252
 +CONFIG_AG7240_NUMBER_TX_PKTS=80
-+CONFIG_AG7240_USE_TRC=y
++# CONFIG_AG7240_USE_TRC is not set
 +CONFIG_AR7240_S26_PHY=y
 +# CONFIG_AR7240_S26_VLAN_IGMP is not set
 +# CONFIG_AR7242_RGMII_PHY is not set
@@ -101,10 +112,13 @@ index 847b9a5..883fe88 100644
 +# CONFIG_AR7242_S16_PHY is not set
 +# CONFIG_AR7242_VIR_PHY is not set
 +# CONFIG_AR8021_PHY is not set
++CONFIG_AG7240_LEN_PER_TX_DS=1536
++CONFIG_AG7240_NUMBER_TX_PKTS=80
++CONFIG_AG7240_NUMBER_RX_PKTS=252
  CONFIG_AR8216_PHY=y
  CONFIG_ARCH_BINFMT_ELF_RANDOMIZE_PIE=y
  CONFIG_ARCH_DISCARD_MEMBLOCK=y
-@@ -38,6 +57,7 @@ CONFIG_ATH79_MACH_CAP4200AG=y
+@@ -38,6 +59,7 @@ CONFIG_ATH79_MACH_CAP4200AG=y
  CONFIG_ATH79_MACH_DB120=y
  CONFIG_ATH79_MACH_DIR_600_A1=y
  CONFIG_ATH79_MACH_DIR_615_C1=y
@@ -112,7 +126,7 @@ index 847b9a5..883fe88 100644
  CONFIG_ATH79_MACH_DIR_825_B1=y
  CONFIG_ATH79_MACH_DIR_825_C1=y
  CONFIG_ATH79_MACH_EAP7660D=y
-@@ -97,6 +117,8 @@ CONFIG_ATH79_NVRAM=y
+@@ -99,6 +121,8 @@ CONFIG_ATH79_NVRAM=y
  CONFIG_ATH79_PCI_ATH9K_FIXUP=y
  CONFIG_ATH79_ROUTERBOOT=y
  # CONFIG_ATH79_WDT is not set
@@ -121,7 +135,7 @@ index 847b9a5..883fe88 100644
  CONFIG_CC_OPTIMIZE_FOR_SIZE=y
  CONFIG_CEVT_R4K=y
  CONFIG_CMDLINE="rootfstype=squashfs,yaffs,jffs2 noinitrd"
-@@ -189,12 +211,9 @@ CONFIG_MIPS_MT_DISABLED=y
+@@ -191,12 +215,9 @@ CONFIG_MIPS_MT_DISABLED=y
  CONFIG_MODULES_USE_ELF_REL=y
  CONFIG_MTD_CFI_ADV_OPTIONS=y
  CONFIG_MTD_CFI_GEOMETRY=y
@@ -134,7 +148,15 @@ index 847b9a5..883fe88 100644
  CONFIG_MTD_MYLOADER_PARTS=y
  CONFIG_MTD_PHYSMAP=y
  CONFIG_MTD_REDBOOT_DIRECTORY_BLOCK=-2
-@@ -224,6 +243,7 @@ CONFIG_RTL8366RB_PHY=y
+@@ -210,6 +231,7 @@ CONFIG_NET_DSA=y
+ CONFIG_NET_DSA_MV88E6060=y
+ CONFIG_NET_DSA_MV88E6063=y
+ CONFIG_NET_DSA_TAG_TRAILER=y
++CONFIG_NET_SCH_FQ_CODEL=y
+ CONFIG_NO_GENERIC_PCI_IOPORT_MAP=y
+ CONFIG_PAGEFLAGS_EXTENDED=y
+ CONFIG_PCI=y
+@@ -226,6 +248,7 @@ CONFIG_RTL8366RB_PHY=y
  CONFIG_RTL8366S_PHY=y
  CONFIG_RTL8366_SMI=y
  CONFIG_RTL8367_PHY=y
@@ -144,10 +166,10 @@ index 847b9a5..883fe88 100644
  CONFIG_SERIAL_8250_RUNTIME_UARTS=1
 diff --git a/target/linux/ar71xx/files/arch/mips/ath79/mach-dir-632-a1.c b/target/linux/ar71xx/files/arch/mips/ath79/mach-dir-632-a1.c
 new file mode 100644
-index 0000000..8274c84
+index 0000000..27ad0ad
 --- /dev/null
 +++ b/target/linux/ar71xx/files/arch/mips/ath79/mach-dir-632-a1.c
-@@ -0,0 +1,403 @@
+@@ -0,0 +1,433 @@
 +/*
 + *  D-Link DIR-632 rev. A1 board support
 + *
@@ -227,41 +249,42 @@ index 0000000..8274c84
 +
 +/*
 + 
-+ LED Definitions, derived from
++ Known LED and GPIO Definitions, derived from
 + 
 + http://zrouter.org/projects/zrouter/repository/entry/boards/D-Link/DIR-632/GPIO
 + http://zrouter.org/projects/zrouter/repository/entry/boards/D-Link/DIR-632/board.hints
 + 
-+ and from practical experimentation using the DD-WRT generic_leds.
-+ 
-+ Known GPIO Pins:
-+ 0	LED	WPS
-+ 1	LED	STATUS Yellow
-+ 6	LED	STATUS Green  - not currently working as expected
-+ 7	LED	Internet      - not currently working as expected
-+ 8	BUTTON	Reset
++ and from practical experimentation using the DD-WRT generic_leds and testing
++
++GPIO LED 
++ 0	LED	WPS (blue)
++ 1	LED	STATUS (bicolour: orange)
++ 6	LED	STATUS (bicolour: green)
++ 7	LED	WAN (bicolour: orange)
++ 8	BUTTON Reset
 + 9	UART
 + 10	UART
-+ 11	LED	USB
-+ 12 BUTTON	WPS
-+ 17	LED	Internet Bi
++ 11	LED	USB (green)
++ 12 BUTTON WPS
++ 13 Test point TP3
++ 14 Test point TP4
++ 15 Test point TP5
++ 17	LED	WAN (bicolour: green)
 +
-+ 32 Wifi 
-+  
-+ Active low have a flags of 0x102 otherwise 0x2 in zRouter board.hints
++Additionally, the ATH9k has GPIO, specified for the LED in platform data
++
++ 0  LED, WLAN (green)
 +
 +*/
 +
-+#define DIR_632_A1_GPIO_LED_WPS			0              // Tested
-+#define DIR_632_A1_GPIO_LED_POWER_AMBER		1        // Tested
++#define DIR_632_A1_GPIO_LED_WPS			0
++#define DIR_632_A1_GPIO_LED_POWER_AMBER		1
 +#define DIR_632_A1_GPIO_LED_POWER_GREEN		6
 +#define DIR_632_A1_GPIO_LED_WAN_AMBER		7
-+#define DIR_632_A1_GPIO_LED_USB		11               // Tested
-+#define DIR_632_A1_GPIO_LED_WAN_GREEN		17         // Tested
-+#define DIR_632_A1_GPIO_LED_WIRELESS 32            // Tested
++#define DIR_632_A1_GPIO_LED_USB		11
++#define DIR_632_A1_GPIO_LED_WAN_GREEN		17
 +
-+#define DIR_632_A1_WLAN_GPIO_LED			0              // Tested
-+
++#define DIR_632_A1_WLAN_GPIO_LED			0
 +
 +#define DIR_632_A1_GPIO_BTN_RESET		8
 +#define DIR_632_A1_GPIO_BTN_WPS			12
@@ -281,11 +304,9 @@ index 0000000..8274c84
 +	}, {
 +		.name		= "d-link:green:power",
 +		.gpio		= DIR_632_A1_GPIO_LED_POWER_GREEN,
-+		//.active_low	= 1,
 +	}, {
 +		.name		= "d-link:amber:wan",
 +		.gpio		= DIR_632_A1_GPIO_LED_WAN_AMBER,
-+		//.active_low	= 1,
 +	}, {
 +		.name		= "d-link:green:wan",
 +		.gpio		= DIR_632_A1_GPIO_LED_WAN_GREEN,
@@ -295,13 +316,6 @@ index 0000000..8274c84
 +		.gpio		= DIR_632_A1_GPIO_LED_USB,
 +		.active_low	= 1,
 +	},
-+#ifdef FIXME_BROKEN_BEFORE_PORTING_AG7240
-+	{
-+		.name		= "d-link:green:wireless",
-+		.gpio		= DIR_632_A1_GPIO_LED_WIRELESS,
-+		.active_low	= 1,
-+	}, 
-+#endif  
 +};
 +
 +static struct gpio_keys_button dir_632_a1_gpio_keys[] __initdata = {
@@ -498,8 +512,48 @@ index 0000000..8274c84
 +  
 +  ath79_register_m25p80(&dir_632_a1_flash);
 + 
++  /*
++   * Further GPIO information.
++   *
++   * Some GPIO can be repurposed / enabled / disabled
++   *
++   * AR7240_GPIO_FUNCTION_UART_EN
++   *            --> enable a Uart on 9,10 (set 9 as RxIn and 10 as TxOut)
++   *
++   * AR7240_GPIO_FUNCTION_SPI_CS_0_EN|AR7240_GPIO_FUNCTION_SPI_CS_1_EN
++   *            --> enable SPI CS0/CS1 on GPIO0/1 - but we have tested LEDs / buttons 
++   *                so this is not in use; we can also assume this has already
++   *                been disabled as a function by default by now...
++   * AR71XX_GPIO_FUNC_STEREO_EN
++   *            --> enable sound on 6,7,8,11 - but we have tested LEDs / buttons 
++   *                so this is not in use; we can also assume this has already
++   *                been disabled as a function by default by now...
++   *
++   * D-link refers to reset on GPIO12 as 'jumpstart'
++   * D-link _also_ refers to AR7240_GPIO_RESET on GPIO21 in its WDT implementatoin
++   * it looks like if a FACTORY_RESET ioctl is called then if this line is
++   * asserted in a 4second time window then a factory reset is also done...
++   * not sure how this interacts with 'JUMPSTART' (reset) because I cant find
++   * a second factory reset button pin on the board...
++   * Does this mean is that there are actually >= 22 GPIO (not 20) 
++   * for AR7242 ...?
++   *   
++   * I buzzed out the following as well:
++   *
++   *  TP3 --> connected to GPIO15
++   *
++   * At boot: GPIO_2=1 (stuck), GPIO_10=1 (stuck)
++   *
++   * OpenWRT sets AR724X_GPIO_FUNC_UART_EN in dev_common
++   */
++ 
++	ath79_gpio_function_enable(AR724X_GPIO_FUNC_JTAG_DISABLE); // Make LEDs on GPIO6/7 work
++ 
 +	ath79_gpio_function_disable(
 +            AR71XX_GPIO_FUNC_STEREO_EN |
++            AR724X_GPIO_FUNCTION_CLK_OBS6_ENABLE |   // cleared by D-link
++            AR724X_GPIO_FUNC_UART_RTS_CTS_EN |       // cleared by D-link
++            AR724X_GPIO_FUNCTION_PCIEPHY_TST_EN |    // cleared by D-link
 +            AR724X_GPIO_FUNC_ETH_SWITCH_LED0_EN |
 +				    AR724X_GPIO_FUNC_ETH_SWITCH_LED1_EN |
 +				    AR724X_GPIO_FUNC_ETH_SWITCH_LED2_EN |
@@ -539,8 +593,6 @@ index 0000000..8274c84
 +  /* inform the ath9k which of its GPIO the WLAN LED is on */
 +  ap9x_pci_setup_wmac_led_pin(0, DIR_632_A1_WLAN_GPIO_LED); // if this doesnt work, go back and traceit through again - reg values match, so only base? c/f set_wl0_led DDWRT
 +  
-+  // ap9x_pci_setup_wmac_gpio
-+  
 +  /* inform the ath9k what wmac to use and where to find its radio cal data */
 +  /* also initialises PCI bus */
 +	ap91_pci_init(ee, wmac);
@@ -570,31 +622,30 @@ index 656a6ef..3002601 100644
  	u32		phy_mask;
 diff --git a/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/Kconfig b/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/Kconfig
 new file mode 100644
-index 0000000..c4cfcd3
+index 0000000..6c557a3
 --- /dev/null
 +++ b/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/Kconfig
-@@ -0,0 +1,124 @@
+@@ -0,0 +1,127 @@
 +config AG7240
-+    tristate "Atheros AR7240 GigE"
-+    depends on ATH79_MACH_DIR_632_A1
++    tristate "Atheros AR7240 GigE (as per DIR-632-A1)"
++    default n
 +    help
-+        This enables the building of Atheros AR7240 gigE driver module as 
-+        used by the D-link DIR-632-A1router.
++        This enables the Atheros AR7240 gigE driver module with S26 and RTL8309
++        switches as used by the D-link DIR-632-A1 router.
 +
 +config AR7240_S26_VLAN_IGMP
 +    bool "Support vlan and igmp functions in AR7240-S26 switch"
++    default n
 +    depends on AG7240
 +
 +config ATHEROS_HEADER_EN
 +    bool "Add two bytes atheros header before the ethernet packet."
-+    depends on AG7240
-+
-+config  AG7240_GE0_IS_CONNECTED
-+    bool "port 0 is connected to a PHY"
++    default n
 +    depends on AG7240
 +
 +choice
-+    prompt "port 0 interface"
++    prompt "port 0 interface type"
++    default AG7240_GE0_MII if ATH79_MACH_DIR_632_A1
 +    depends on AG7240
 +
 +config AG7240_GE0_MII
@@ -608,9 +659,18 @@ index 0000000..c4cfcd3
 +
 +endchoice
 +
++config  AG7240_GE0_IS_CONNECTED
++    bool "port 0 is connected to a PHY"
++    depends on AG7240
++    default y if ATH79_MACH_DIR_632_A1
++
 +choice  
-+    prompt "PHY or switch used"
++    prompt "port 0 PHY or switch used"
++    default AR7242_RTL8309G_PHY if ATH79_MACH_DIR_632_A1
 +    depends on AG7240_GE0_IS_CONNECTED
++
++config AR7242_RTL8309G_PHY
++    bool "Realtek RTL8309G Switch"
 +
 +config AR7242_RGMII_PHY
 +    bool "AR7242 RGMII Phy"
@@ -625,35 +685,33 @@ index 0000000..c4cfcd3
 +config AR7242_VIR_PHY
 +    bool "AR7242 Vitual Switch"
 +
-+config AR7242_RTL8309G_PHY
-+    bool "Realtek RTL8309G Switch"
-+
 +endchoice
 +
 +config  ATHRS_QOS
 +    bool "Enable MAC 0 QOS "
 +    depends on AG7240
 +
-+config  AG7240_GE1_IS_CONNECTED
-+    bool "port 1 is connected to a PHY"
-+    depends on AG7240
-+
 +choice
-+    prompt "port 1 interface (depends on port0)"
-+    depends on AG7240_GE1_IS_CONNECTED
++    prompt "port 1 interface type (depends on port0)"
++    depends on AG7240
 +    
 +config AG7240_GE1_MII
 +    bool "MII mode"
 +
 +endchoice
 +
-+choice  
-+    prompt "PHY or switch used"
++config  AG7240_GE1_IS_CONNECTED
++    bool "port 1 is connected to a PHY"
++    default y if ATH79_MACH_DIR_632_A1
 +    depends on AG7240
++
++choice  
++    prompt "port 1 PHY or switch used"
++    default AR7240_S26_PHY if ATH79_MACH_DIR_632_A1
++    depends on AG7240_GE1_IS_CONNECTED
 +
 +config AR7240_S26_PHY
 +    bool "Atheros S26 Phy"
-+    depends on AG7240
 +
 +config S26_SWITCH_ONLY_MODE
 +    bool "Enable switch only mode"
@@ -665,39 +723,36 @@ index 0000000..c4cfcd3
 +endchoice
 +
 +config  AG7240_LEN_PER_TX_DS 
-+        int "Len per tx descriptor" 
-+        default "1536" 
-+	depends on (REALTEK_PHY ||  ADM6996FC_PHY || ICPLUS_PHY) && AG7240
-+
-+config  AG7240_LEN_PER_TX_DS 
-+        int "Len per tx descriptor" 
-+	default "512" 	
-+	depends on !(REALTEK_PHY ||  ADM6996FC_PHY || ICPLUS_PHY) && AG7240
++    int "Len per tx descriptor" 
++    default "1536" 
++    depends on AG7240
 +
 +config  AG7240_NUMBER_TX_PKTS
-+        int "Number tx pkts"   
-+        default "100"
-+        depends on AG7240
++    int "Number tx pkts"   
++    default "80" if ATH79_MACH_DIR_632_A1
++    default "100"
++    depends on AG7240
 +
 +config  AG7240_NUMBER_RX_PKTS
-+        int "Number rx pkts"       
-+        default "252"
-+        depends on AG7240
++    int "Number rx pkts"       
++    default "252"
++    depends on AG7240
 +
 +config  AG7240_MAC_LOCATION 
 +    hex "Memory location of MAC addresses (in flash)" 
-+	default "0xbfff0000" 	
-+	help
-+	  This is the physical address in memory that contains
-+	  the MAC addresses for the board Ethernet interfaces.  They
-+	  are stored sequentially in 6 byte groups, for the total number
-+	  of interfaces supported on the board.
-+	depends on AG7240
++    default "0x1fff0000" if ATH79_MACH_DIR_632_A1
++    default "0xbfff0000" 	
++    help
++      This is the physical address in memory that contains
++      the MAC addresses for the board Ethernet interfaces.  They
++      are stored sequentially in 6 byte groups, for the total number
++      of interfaces supported on the board.
++    depends on AG7240
 +
 +config  AG7240_USE_TRC
-+	bool "Print realtime trace on asserts, this will negatively affect performance"
-+	default 0
-+	depends on AG7240
++    bool "Print realtime trace on asserts, this will negatively affect performance"
++    default 0
++    depends on AG7240
 diff --git a/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/Makefile b/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/Makefile
 new file mode 100644
 index 0000000..20e423b
@@ -720,10 +775,10 @@ index 0000000..20e423b
 +
 diff --git a/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/ag7240.c b/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/ag7240.c
 new file mode 100644
-index 0000000..37469b4
+index 0000000..ea9e58f
 --- /dev/null
 +++ b/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/ag7240.c
-@@ -0,0 +1,2584 @@
+@@ -0,0 +1,2553 @@
 +/*
 +
 + * Copyright (c) 2008, Atheros Communications Inc.
@@ -769,11 +824,6 @@ index 0000000..37469b4
 +#include "ag7240.h"
 +#include "ag7240_phy.h"
 +#include "ag7240_trc.h"
-+
-+/* Set the following to zero to have a look at actual RAM when trying to find MAC addresses, etc. */
-+#define DEBUG_CHECK_MEMORY_CONTENTS 1
-+/* Set to one for now to stop this crashing on module load, unitl I get back to working out why it gets probed twice and how to ignore it */
-+#define DEBUG_ENABLE_PLATFORM_PROBE_CRASH_PREVENTION 1
 +
 +ag7240_mac_t *ag7240_macs[2];
 +static void ag7240_hw_setup(ag7240_mac_t *mac);
@@ -3013,10 +3063,6 @@ index 0000000..37469b4
 +	return 0;
 +}
 +
-+#if DEBUG_ENABLE_PLATFORM_PROBE_CRASH_PREVENTION
-+static int crash_prevention_hack = 0;
-+#endif
-+
 +/*
 + * All allocations (except irq and rings).
 + */
@@ -3030,30 +3076,13 @@ index 0000000..37469b4
 +	struct ag71xx *ag;
 +	struct ag7240_platform_data *pdata;
 +
-+#if DEBUG_ENABLE_PLATFORM_PROBE_CRASH_PREVENTION
-+  /* For some reason this is getting called twice which obviously causes no end of pain... */
-+  pr_debug("ag7240_init() pdev=%p dev=%p hack=%d\n", pdev, pdev?(void*)&pdev->dev:(void*)-1, crash_prevention_hack);
-+  if (crash_prevention_hack) {
-+    pr_err("Whoops! probed again...\n");
-+    WARN_ON(1);
-+    return 1;
-+  }
-+  crash_prevention_hack++;
-+#endif
-+  
 +	pdata = pdev->dev.platform_data;
 +  if (!pdata) {
 +		dev_err(&pdev->dev, "no platform data specified\n");
 +		return -ENXIO;
 +	}
-+#if DEBUG_CHECK_MEMORY_CONTENTS  
-+  print_hex_dump(KERN_DEBUG, "test ", DUMP_PREFIX_ADDRESS, 16, 1, (u8*)KSEG1ADDR(0x1fff0000), 64, true);
-+#ifdef CONFIG_AG7240_MAC_LOCATION  
-+  print_hex_dump(KERN_DEBUG, "test ", DUMP_PREFIX_ADDRESS, 16, 1, (u8*)KSEG1ADDR(CONFIG_AG7240_MAC_LOCATION), 64, true);
-+#endif  
-+#endif
 +
-+    /* 
++  /* 
 +    * tx_len_per_ds is the number of bytes per data transfer in word increments.
 +    * 
 +    * If the value is 0 than we default the value to a known good value based
@@ -3254,11 +3283,6 @@ index 0000000..37469b4
 +    int i;
 +	struct net_device *dev = platform_get_drvdata(pdev);
 +
-+#if DEBUG_ENABLE_PLATFORM_PROBE_CRASH_PREVENTION
-+  pr_debug("ag7240_cleanup() pdev=%p dev=%p hack=%d\n", pdev, dev, crash_prevention_hack);
-+  crash_prevention_hack--;
-+#endif
-+  
 +  if (!dev) return 0;
 +  WARN_ON(dev != ag7240_macs[0]);
 +
@@ -5292,11 +5316,12 @@ index 0000000..ad84511
 +#endif
 diff --git a/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/ar7240_s26_phy.c b/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/ar7240_s26_phy.c
 new file mode 100644
-index 0000000..e7dac94
+index 0000000..7803959
 --- /dev/null
 +++ b/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/ar7240_s26_phy.c
-@@ -0,0 +1,1431 @@
-+/* Copyright (c) 2008, Atheros Communications Inc.
+@@ -0,0 +1,1391 @@
++/*
++ * Copyright (c) 2008, Atheros Communications Inc.
 + *
 + * Permission to use, copy, modify, and/or distribute this software for any
 + * purpose with or without fee is hereby granted, provided that the above
@@ -5694,10 +5719,7 @@ index 0000000..e7dac94
 +    if (mac_has_flag(mac,ATHR_S26_HEADER))
 +        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x4804);
 +    else
-+        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x6004);
-+
-+   athrs26_reg_write(0x30,(athrs26_reg_read(0x30)&0xfffff800)|0x6b4);
-+//    athrs26_reg_write(0x30,(athrs26_reg_read(0x30)&AR8216_GCTRL_MTU)|1716);
++        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x4004);
 +
 +    athr26_init_flag = 1;
 +}
@@ -5819,6 +5841,7 @@ index 0000000..e7dac94
 +        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x4804);
 +    else 
 +        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x6004);
++        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x4004);
 +
 +   /* Tag Priority Mapping */
 +//      athrs26_reg_write(0x70, 0x41af);
@@ -5865,14 +5888,10 @@ index 0000000..e7dac94
 +    /* Disable WAN mac inside S26 after S26 Reset*/
 +
 +    athrs26_reg_write(PORT_STATUS_REGISTER5,0x0);
-+
-+//#ifdef CONFIG_AR7240_S26_VLAN_IGMP
-+    // Set Max MTU to 1518+6 for vlan and header space.
-+//    athrs26_reg_write(0x30,(athrs26_reg_read(0x30)&AR8216_GCTRL_MTU)|1716);
-+    athrs26_reg_write(0x30,(athrs26_reg_read(0x30)&0xfffff800)|0x6b4);
-+//#endif
-+
-+        /* Set CPU port0 to Atheros Header Enable. */
++#ifdef CONFIG_AR7240_S26_VLAN_IGMP
++    /* Set Max MTU to 1518+6 for vlan and header space. */
++    athrs26_reg_write(0x30,(athrs26_reg_read(0x30)&0xfffff800)|0x5f4);
++#endif
 +    if(mac_has_flag(mac,ATHR_S26_HEADER))
 +        athrs26_reg_write(0x104,athrs26_reg_read(0x104)|(0x1<<11));
 +
@@ -5897,6 +5916,7 @@ index 0000000..e7dac94
 +        return;
 +        
 +    netif_carrier_off(dev);
++    netif_stop_queue(dev);
 +
 +    phy_val_saved = s26_rd_phy(ATHR_PHY4_ADDR,ATHR_PHY_CONTROL);
 +    s26_wr_phy( ATHR_PHY4_ADDR, ATHR_PHY_CONTROL, phy_val_saved | 0x800);
@@ -6071,7 +6091,7 @@ index 0000000..e7dac94
 +        s26_wr_phy( phyUnit, 30, 0x1352);
 +        
 +#ifdef S26_VER_1_0
-+        //turn off power saving
++        /* turn off power saving */
 +       s26_wr_phy(phyUnit, 29, 41);
 +       s26_wr_phy(phyUnit, 30, 0);
 +       printk("def_ S26_VER_1_0\n");
@@ -6328,7 +6348,7 @@ index 0000000..e7dac94
 +    if (is_ar7240()) {
 +        unit = 0;
 +    } 
-+    else if(is_ar7241() || is_ar7242() || is_ar933x()) {
++    else if(is_ar7241() || is_ar7242()) {
 +        unit = 1;
 +    }
 +
@@ -6362,46 +6382,10 @@ index 0000000..e7dac94
 +    if (is_ar7240()) {
 +        unit = 0;
 +    } 
-+    else if(is_ar7241() || is_ar7242() || is_ar933x()) {
++    else if(is_ar7241() || is_ar7242()) {
 +        unit = 1;
 +    }
 +
-+    if(is_ar933x())
-+    {
-+        //The writing sequence need special care for register 0x40,0x50,0x98, because the busy bit design
-+        //0x98: L->H (write low address first, then high address), 0x40: H->L, 0x50: H->L
-+        //Other registers: any sequence is working.
-+        if(s26_addr!=0x98)
-+        {
-+            phy_reg_write(unit, phy_address, reg_address, data);
-+
-+            phy_address = 0x17 & ((addr_temp >> 4) | 0x10);
-+            reg_address = ((addr_temp << 1) & 0x1e) | 0x1;
-+            data =  s26_write_data >> 16;
-+            phy_reg_write(unit, phy_address, reg_address, data);
-+
-+            reg_address = reg_address & 0x1e;
-+            data = s26_write_data  & 0xffff;
-+            phy_reg_write(unit, phy_address, reg_address, data);
-+        }
-+        else
-+        {
-+            phy_reg_write(unit, phy_address, reg_address, data);
-+
-+            phy_address = (0x17 & ((addr_temp >> 4) | 0x10));
-+            reg_address = ((addr_temp << 1) & 0x1e);
-+
-+            data = s26_write_data  & 0xffff;
-+            phy_reg_write(unit, phy_address, reg_address, data);
-+
-+            reg_address = (((addr_temp << 1) & 0x1e) | 0x1);
-+            data = s26_write_data >> 16;
-+            phy_reg_write(unit, phy_address, reg_address, data);
-+
-+        }
-+    }
-+    else
-+    {
 +        phy_reg_write(unit,phy_address, reg_address, data);
 +
 +        phy_address = (0x17 & ((addr_temp >> 4) | 0x10));
@@ -6413,7 +6397,7 @@ index 0000000..e7dac94
 +        reg_address = ((addr_temp << 1) & 0x1e);
 +        data = s26_write_data  & 0xffff;
 +        phy_reg_write(unit,phy_address, reg_address, data);
-+    }
++    
 +}
 +
 +void athrs26_reg_rmw(unsigned int s26_addr, unsigned int s26_write_data) 
@@ -6432,7 +6416,7 @@ index 0000000..e7dac94
 +	 return -1 ;
 +     }
 +
-+    // MDIO_CMD is set for read
++    /* MDIO_CMD is set for read */
 +
 +    rddata = athrs26_reg_read(0x98);
 +    rddata = (rddata & 0x0) | (reg_addr<<16) | (phy_addr<<21) | (1<<27) | (1<<30) | (1<<31) ;
@@ -6441,13 +6425,13 @@ index 0000000..e7dac94
 +    rddata = athrs26_reg_read(0x98);
 +    rddata = rddata & (1<<31);
 +
-+    // Check MDIO_BUSY status
++    /* Check MDIO_BUSY status */
 +    while(rddata){
 +        rddata = athrs26_reg_read(0x98);
 +        rddata = rddata & (1<<31);
 +    }
 +
-+    // Read the data from phy
++    /* Read the data from phy */
 +
 +    rddata = athrs26_reg_read(0x98) & 0xffff;
 +
@@ -6463,7 +6447,7 @@ index 0000000..e7dac94
 +        return ;
 +    }
 +
-+    // MDIO_CMD is set for read
++    /* MDIO_CMD is set for read */
 +
 +    rddata = athrs26_reg_read(0x98);
 +    rddata = (rddata & 0x0) | (write_data & 0xffff) | (reg_addr<<16) | (phy_addr<<21) | (0<<27) | (1<<30) | (1<<31) ;
@@ -6472,7 +6456,7 @@ index 0000000..e7dac94
 +    rddata = athrs26_reg_read(0x98);
 +    rddata = rddata & (1<<31);
 +
-+       // Check MDIO_BUSY status
++    /* Check MDIO_BUSY status */
 +    while(rddata){
 +        rddata = athrs26_reg_read(0x98);
 +        rddata = rddata & (1<<31);
@@ -6724,1398 +6708,6 @@ index 0000000..e7dac94
 +   }
 +   else  {
 +      DPRINTF("Spurious link interrupt:%s,status:%x\n",__func__,status);	
-+      athrs26_reg_write(S26_GLOBAL_INTR_MASK_REG,PHY_LINK_CHANGE_REG); 
-+   }
-+}
-diff --git a/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/ar7240_s26_phy.c.new b/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/ar7240_s26_phy.c.new
-new file mode 100644
-index 0000000..e1653ce
---- /dev/null
-+++ b/target/linux/ar71xx/files/drivers/net/ethernet/atheros/ag7240/ar7240_s26_phy.c.new
-@@ -0,0 +1,1386 @@
-+/*
-+ * Copyright (c) 2008, Atheros Communications Inc.
-+ *
-+ * Permission to use, copy, modify, and/or distribute this software for any
-+ * purpose with or without fee is hereby granted, provided that the above
-+ * copyright notice and this permission notice appear in all copies.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
-+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
-+ */
-+
-+#include <linux/config.h>
-+#include <linux/types.h>
-+#include <linux/netdevice.h>
-+#include <linux/etherdevice.h>
-+#include <linux/delay.h>
-+#include "ag7240_phy.h"
-+#include "ar7240_s26_phy.h"
-+#include "eth_diag.h"
-+/* PHY selections and access functions */
-+
-+typedef enum {
-+    PHY_SRCPORT_INFO, 
-+    PHY_PORTINFO_SIZE,
-+} PHY_CAP_TYPE;
-+
-+typedef enum {
-+    PHY_SRCPORT_NONE,
-+    PHY_SRCPORT_VLANTAG, 
-+    PHY_SRCPORT_TRAILER,
-+} PHY_SRCPORT_TYPE;
-+
-+#ifdef CONFIG_AR7240_S26_VLAN_IGMP
-+#define PYTHON_OK   0
-+#define PYTHON_ERR  1
-+#define PYTHON_FULL 2
-+#endif
-+
-+#define DRV_LOG(DBG_SW, X0, X1, X2, X3, X4, X5, X6)
-+#define DRV_MSG(x,a,b,c,d,e,f)
-+#define DRV_PRINT(DBG_SW,X)
-+
-+#define ATHR_LAN_PORT_VLAN          1
-+#define ATHR_WAN_PORT_VLAN          2
-+#define ENET_UNIT_LAN 1
-+#define ENET_UNIT_WAN 0
-+
-+#define TRUE    1
-+#define FALSE   0
-+
-+#define ATHR_PHY0_ADDR   0x0
-+#define ATHR_PHY1_ADDR   0x1
-+#define ATHR_PHY2_ADDR   0x2
-+#define ATHR_PHY3_ADDR   0x3
-+#define ATHR_PHY4_ADDR   0x4
-+
-+#define MODULE_NAME "ATHRS26"
-+MODULE_LICENSE("Dual BSD/GPL");
-+
-+#ifdef S26_PHY_DEBUG
-+#define DPRINTF(_fmt,...) do {         \
-+                printk(MODULE_NAME":"_fmt, __VA_ARGS__);      \
-+} while (0)
-+#else
-+#define DPRINTF(_fmt,...) 
-+#endif
-+
-+#ifdef ETH_SOFT_LED
-+extern ATH_LED_CONTROL    PLedCtrl;
-+extern atomic_t Ledstatus;
-+#endif
-+extern int phy_in_reset;
-+
-+/*
-+ * Track per-PHY port information.
-+ */
-+typedef struct {
-+    BOOL   isEnetPort;       /* normal enet port */
-+    BOOL   isPhyAlive;       /* last known state of link */
-+    int    ethUnit;          /* MAC associated with this phy port */
-+    uint32_t phyBase;
-+    uint32_t phyAddr;          /* PHY registers associated with this phy port */
-+    uint32_t VLANTableSetting; /* Value to be written to VLAN table */
-+} athrPhyInfo_t;
-+
-+/*
-+ * Per-PHY information, indexed by PHY unit number.
-+ */
-+static athrPhyInfo_t athrPhyInfo[] = {
-+
-+    {TRUE,   /* port 1 -- LAN port 1 */
-+     FALSE,
-+     ENET_UNIT_LAN,
-+     0,
-+     ATHR_PHY0_ADDR,
-+     ATHR_LAN_PORT_VLAN
-+    },
-+
-+    {TRUE,   /* port 2 -- LAN port 2 */
-+     FALSE,
-+     ENET_UNIT_LAN,
-+     0,
-+     ATHR_PHY1_ADDR, 
-+     ATHR_LAN_PORT_VLAN
-+    },
-+
-+    {TRUE,   /* port 3 -- LAN port 3 */
-+     FALSE,
-+     ENET_UNIT_LAN,
-+     0,
-+     ATHR_PHY2_ADDR, 
-+     ATHR_LAN_PORT_VLAN
-+    },
-+
-+    {TRUE,   /* port 4 --  LAN port 4 */
-+     FALSE,
-+     ENET_UNIT_LAN,     
-+     0,
-+     ATHR_PHY3_ADDR, 
-+     ATHR_LAN_PORT_VLAN   /* Send to all ports */
-+    },
-+    
-+    {TRUE,  /* port 5 -- WAN Port 5 */
-+     FALSE,
-+     ENET_UNIT_WAN,
-+     0,
-+     ATHR_PHY4_ADDR, 
-+     ATHR_LAN_PORT_VLAN    /* Send to all ports */
-+    },
-+
-+    {FALSE,   /* port 0 -- cpu port 0 */
-+     TRUE,
-+     ENET_UNIT_LAN,
-+     0,
-+     0x00,
-+     ATHR_LAN_PORT_VLAN
-+    },
-+
-+};
-+
-+static uint8_t athr26_init_flag = 0,athr26_init_flag1 = 0;
-+static DECLARE_WAIT_QUEUE_HEAD (hd_conf_wait);
-+
-+#define ATHR_GLOBALREGBASE    0
-+
-+#define ATHR_PHY_MAX 5
-+
-+/* Range of valid PHY IDs is [MIN..MAX] */
-+#define ATHR_ID_MIN 0
-+#define ATHR_ID_MAX (ATHR_PHY_MAX-1)
-+
-+/* Convenience macros to access myPhyInfo */
-+#define ATHR_IS_ENET_PORT(phyUnit) (athrPhyInfo[phyUnit].isEnetPort)
-+#define ATHR_IS_PHY_ALIVE(phyUnit) (athrPhyInfo[phyUnit].isPhyAlive)
-+#define ATHR_ETHUNIT(phyUnit) (athrPhyInfo[phyUnit].ethUnit)
-+#define ATHR_PHYBASE(phyUnit) (athrPhyInfo[phyUnit].phyBase)
-+#define ATHR_PHYADDR(phyUnit) (athrPhyInfo[phyUnit].phyAddr)
-+#define ATHR_VLAN_TABLE_SETTING(phyUnit) (athrPhyInfo[phyUnit].VLANTableSetting)
-+
-+
-+#define ATHR_IS_ETHUNIT(phyUnit, ethUnit) \
-+            (ATHR_IS_ENET_PORT(phyUnit) &&        \
-+            ATHR_ETHUNIT(phyUnit) == (ethUnit))
-+
-+#define ATHR_IS_WAN_PORT(phyUnit) (!(ATHR_ETHUNIT(phyUnit)==ENET_UNIT_LAN))
-+            
-+/* Forward references */
-+BOOL athrs26_phy_is_link_alive(int phyUnit);
-+unsigned int s26_rd_phy(unsigned int phy_addr, unsigned int reg_addr);
-+void s26_wr_phy(unsigned int phy_addr, unsigned int reg_addr, unsigned int write_data);
-+extern int ag7240_check_link(ag7240_mac_t *mac,int phyUnit);
-+
-+#if defined(CONFIG_VLAN_8021Q) || defined(CONFIG_VLAN_8021Q_MODULE)
-+static uint16_t port_def_vid[5] = {1, 1, 1, 1, 1};
-+static uint8_t cpu_egress_tagged_flag = 0;
-+
-+inline uint8_t is_cpu_egress_tagged(void)
-+{
-+    return cpu_egress_tagged_flag;
-+}
-+
-+void set_cpu_egress_tagged(uint8_t is_tagged)
-+{
-+    cpu_egress_tagged_flag = is_tagged;   
-+}
-+
-+inline uint16_t athrs26_defvid_get(uint32_t port_id)
-+{
-+    if ((port_id == 0) || (port_id > 5))
-+        return 0;
-+
-+    return port_def_vid[port_id - 1];
-+}
-+
-+BOOL athrs26_defvid_set(uint32_t port_id, uint16_t def_vid)
-+{
-+    if ((def_vid == 0) || (def_vid > 4094))
-+        return FALSE;
-+
-+    if ((port_id == 0) || (port_id > 5))
-+        return FALSE;
-+      
-+    port_def_vid[port_id - 1] = def_vid;
-+    return TRUE;
-+}
-+#endif
-+
-+void athrs26_powersave_off(int phy_addr)
-+{
-+    s26_wr_phy(phy_addr,ATHR_DEBUG_PORT_ADDRESS,0x29);
-+    s26_wr_phy(phy_addr,ATHR_DEBUG_PORT_DATA,0x36c0);
-+
-+}
-+
-+void athrs26_sleep_off(int phy_addr)
-+{
-+    s26_wr_phy(phy_addr,ATHR_DEBUG_PORT_ADDRESS,0xb);
-+    s26_wr_phy(phy_addr,ATHR_DEBUG_PORT_DATA,0x3c00);
-+}
-+
-+void athrs26_enable_linkIntrs(int ethUnit) 
-+{
-+     int phyUnit = 0, phyAddr = 0;
-+     ag7240_mac_t *mac = ag7240_macs[ethUnit];
-+
-+    /* Enable global PHY link status interrupt */
-+    athrs26_reg_write(S26_GLOBAL_INTR_MASK_REG,PHY_LINK_CHANGE_REG); 
-+
-+    if (mac_has_flag(mac,ETH_SWONLY_MODE)) {
-+        if (ethUnit == 1) {
-+            for (phyUnit = 0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
-+                phyAddr = ATHR_PHYADDR(phyUnit);
-+                s26_wr_phy(phyAddr,ATHR_PHY_INTR_ENABLE,PHY_LINK_INTRS);
-+            }
-+        }
-+        return ;
-+    }
-+
-+    if (ethUnit == ENET_UNIT_WAN) {
-+        s26_wr_phy(ATHR_PHY4_ADDR,ATHR_PHY_INTR_ENABLE,PHY_LINK_INTRS);
-+    } 
-+    else {
-+        for (phyUnit = 0; phyUnit < ATHR_PHY_MAX - 1; phyUnit++) {
-+            phyAddr = ATHR_PHYADDR(phyUnit);
-+            s26_wr_phy(phyAddr,ATHR_PHY_INTR_ENABLE,PHY_LINK_INTRS);
-+        }
-+    }
-+}
-+
-+void athrs26_disable_linkIntrs(int ethUnit) 
-+{
-+     int phyUnit = 0, phyAddr = 0;
-+     ag7240_mac_t *mac = ag7240_macs[ethUnit];
-+
-+     if (mac_has_flag(mac,ETH_SWONLY_MODE)) {
-+         if (ethUnit == 1) {
-+             for (phyUnit = 0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
-+                 phyAddr = ATHR_PHYADDR(phyUnit);
-+                 s26_wr_phy(phyAddr,ATHR_PHY_INTR_ENABLE,0x0);
-+             }
-+         }
-+         return ;
-+     }
-+
-+     if (ethUnit == ENET_UNIT_WAN) {
-+         s26_wr_phy(ATHR_PHY4_ADDR,ATHR_PHY_INTR_ENABLE,0x0);
-+     } 
-+     else {
-+         for (phyUnit = 0; phyUnit < ATHR_PHY_MAX - 1; phyUnit++) {
-+             phyAddr = ATHR_PHYADDR(phyUnit);
-+             s26_wr_phy(phyAddr,ATHR_PHY_INTR_ENABLE,0x0);
-+         }
-+     }
-+}
-+
-+void athrs26_force_100M(int phyAddr,int duplex) 
-+{
-+    uint32_t ar7240_revid;
-+
-+#ifdef ETH_SOFT_LED
-+    /* Resetting PHY will disable MDIO access needed by soft LED task.
-+     * Hence, Do not reset PHY until Soft LED task get completed.
-+     */
-+    while(atomic_read(&Ledstatus) == 1);
-+    PLedCtrl.ledlink[phyAddr] = 0;
-+#endif
-+    phy_in_reset = 1;
-+   /*
-+    *  Force MDI and MDX to alternate ports 
-+    *  Phy 0,2 and 4 -- MDI
-+    *  Phy 1 and 3 -- MDX
-+    */
-+    if(phyAddr%2) {
-+        s26_wr_phy(phyAddr,ATHR_PHY_FUNC_CONTROL,0x820);
-+    }
-+    else { 
-+        s26_wr_phy(phyAddr,ATHR_PHY_FUNC_CONTROL,0x800);
-+    }
-+
-+    ar7240_revid = ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK;
-+
-+    if(ar7240_revid == AR7240_REV_1_0) {
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_ADDRESS,0x0);
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_DATA,0x2ee);
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_ADDRESS,0x3);
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_DATA,0x3a11);
-+    }
-+    s26_wr_phy(phyAddr,ATHR_PHY_CONTROL,(0xa000|(duplex << 8)));
-+    phy_in_reset = 0;
-+}
-+
-+void athrs26_force_10M(int phyAddr,int duplex) 
-+{
-+    uint32_t ar7240_revid;
-+#ifdef ETH_SOFT_LED
-+    /* Resetting PHY will disable MDIO access needed by soft LED task.
-+     * Hence, Do not reset PHY until Soft LED task get completed.
-+     */
-+    while(atomic_read(&Ledstatus) == 1);
-+    PLedCtrl.ledlink[phyAddr] = 0;
-+#endif
-+    phy_in_reset = 1;
-+
-+    athrs26_powersave_off(phyAddr);
-+    athrs26_sleep_off(phyAddr);
-+
-+    ar7240_revid = ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK;
-+
-+    if(ar7240_revid == AR7240_REV_1_0) {
-+        s26_wr_phy(phyAddr,ATHR_PHY_FUNC_CONTROL,0x800);
-+        s26_wr_phy(phyAddr,ATHR_PHY_CONTROL,0x8100);
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_ADDRESS,0x0);
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_DATA,0x12ee);
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_ADDRESS,0x3);
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_DATA,0x3af0);
-+    }
-+    s26_wr_phy(phyAddr,ATHR_PHY_CONTROL,(0x8000 |(duplex << 8)));
-+    phy_in_reset = 0;
-+}
-+
-+void athrs26_reg_init(int ethUnit)
-+{
-+    uint32_t ar7240_revid;
-+    uint32_t rd_data;
-+    ag7240_mac_t *mac = ag7240_macs[ethUnit];
-+
-+    /* if using header for register configuration, we have to     */
-+    /* configure s26 register after frame transmission is enabled */
-+    if (athr26_init_flag)
-+        return;
-+
-+    ar7240_revid = ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK;
-+
-+    if(ar7240_revid == AR7240_REV_1_0) {
-+#ifdef S26_FORCE_100M
-+        athrs26_force_100M(ATHR_PHY4_ADDR,1);
-+#endif
-+#ifdef S26_FORCE_10M
-+        athrs26_force_10M(ATHR_PHY4_ADDR,1);
-+#endif
-+    } else {
-+        s26_wr_phy(ATHR_PHY4_ADDR,ATHR_PHY_CONTROL,0x9000);
-+
-+        /* Class A setting for 100M */
-+        s26_wr_phy(ATHR_PHY4_ADDR, 29, 5);
-+        s26_wr_phy(ATHR_PHY4_ADDR, 30, (s26_rd_phy(ATHR_PHY4_ADDR, 30)&((~2)&0xffff)));
-+    }
-+   
-+    /* Enable flow control on CPU port */
-+    athrs26_reg_write(PORT_STATUS_REGISTER0, 
-+                      (athrs26_reg_read(PORT_STATUS_REGISTER0) | 0x30));
-+
-+    /* Disable WAN mac inside S26 */
-+    athrs26_reg_write(PORT_STATUS_REGISTER5,0x0);
-+
-+    /* Enable WAN mac inside S26 */
-+    if (mac_has_flag(mac,ETH_SWONLY_MODE)) 
-+        athrs26_reg_write(PORT_STATUS_REGISTER5,0x200);
-+
-+    /* Enable MDIO Access if PHY is Powered-down */
-+    s26_wr_phy(ATHR_PHY4_ADDR,ATHR_DEBUG_PORT_ADDRESS,0x3);
-+    rd_data = s26_rd_phy(ATHR_PHY4_ADDR,ATHR_DEBUG_PORT_DATA);
-+    s26_wr_phy(ATHR_PHY4_ADDR,ATHR_DEBUG_PORT_ADDRESS,0x3);
-+    s26_wr_phy(ATHR_PHY4_ADDR,ATHR_DEBUG_PORT_DATA,(rd_data & 0xfffffeff) );
-+
-+    if (mac_has_flag(mac,ATHR_S26_HEADER))
-+        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x4804);
-+    else
-+        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x4004);
-+
-+    athr26_init_flag = 1;
-+}
-+
-+void athrs26_reg_init_lan(int ethUnit)
-+{
-+    int i = 60;
-+    int       phyUnit;
-+    uint32_t  phyBase = 0;
-+    BOOL      foundPhy = FALSE;
-+    uint32_t  phyAddr = 0;
-+    uint32_t  queue_ctrl_reg = 0;
-+    uint32_t  ar7240_revid;
-+    uint32_t rd_data;
-+    ag7240_mac_t *mac = ag7240_macs[ethUnit];
-+
-+    /* if using header for register configuration, we have to     */
-+    /* configure s26 register after frame transmission is enabled */
-+    if (athr26_init_flag1)
-+        return;
-+    
-+    /* reset switch */
-+    printk(MODULE_NAME ": resetting s26\n");
-+    athrs26_reg_write(0x0, athrs26_reg_read(0x0)|0x80000000);
-+
-+    while(i--) {
-+        mdelay(100);
-+        if(!(athrs26_reg_read(0x0)&0x80000000))
-+            break;
-+    }
-+    printk(MODULE_NAME ": s26 reset done\n");
-+     
-+    /* 100M Half Duplex Throughput setting */
-+    athrs26_reg_write(0xe4,0x079c1040);
-+
-+    /* Change HOL settings 
-+     * 25: PORT_QUEUE_CTRL_ENABLE.
-+     * 24: PRI_QUEUE_CTRL_EN.
-+     */
-+    athrs26_reg_write(0x118,0x0032b5555);
-+
-+    for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
-+
-+        if ((ATHR_ETHUNIT(phyUnit) == ENET_UNIT_WAN) &&
-+            !mac_has_flag(mac,ETH_SWONLY_MODE))
-+            continue;
-+
-+        foundPhy = TRUE;
-+        phyBase = ATHR_PHYBASE(phyUnit);
-+        phyAddr = ATHR_PHYADDR(phyUnit);
-+
-+        ar7240_revid = ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK;
-+
-+        if(ar7240_revid == AR7240_REV_1_0) {
-+#ifdef S26_FORCE_100M 
-+            athrs26_force_100M(phyAddr,1); 
-+#endif
-+#ifdef S26_FORCE_10M
-+            athrs26_force_10M(phyAddr,1); 
-+#endif
-+        } 
-+        else {
-+            s26_wr_phy(phyAddr,ATHR_PHY_CONTROL,0x9000);
-+
-+            /* Class A setting for 100M */
-+            s26_wr_phy(phyAddr, 29, 5);
-+            s26_wr_phy(phyAddr, 30, (s26_rd_phy(phyAddr, 30)&((~2)&0xffff)));
-+        }
-+
-+        /* Enable MDIO Access if PHY is Powered-down */
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_ADDRESS,0x3);
-+        rd_data = s26_rd_phy(phyAddr,ATHR_DEBUG_PORT_DATA);
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_ADDRESS,0x3);
-+        s26_wr_phy(phyAddr,ATHR_DEBUG_PORT_DATA,(rd_data & 0xfffffeff) );
-+
-+        /* Change HOL settings 
-+         * 25: PORT_QUEUE_CTRL_ENABLE.
-+         * 24: PRI_QUEUE_CTRL_EN.
-+         */
-+        queue_ctrl_reg = (0x100 * phyUnit) + 0x218 ;
-+        athrs26_reg_write(queue_ctrl_reg,0x032b5555);
-+       
-+        DPRINTF("S26 ATHR_PHY_FUNC_CONTROL (%d):%x\n",phyAddr,
-+            s26_rd_phy(phyAddr,ATHR_PHY_FUNC_CONTROL));
-+        DPRINTF("S26 PHY ID  (%d) :%x\n",phyAddr,
-+            s26_rd_phy(phyAddr,ATHR_PHY_ID1));
-+        DPRINTF("S26 PHY CTRL  (%d) :%x\n",phyAddr,
-+            s26_rd_phy(phyAddr,ATHR_PHY_CONTROL));
-+        DPRINTF("S26 ATHR PHY STATUS  (%d) :%x\n",phyAddr,
-+            s26_rd_phy(phyAddr,ATHR_PHY_STATUS));
-+    }
-+
-+    /* 
-+     * CPU port Enable 
-+     */
-+
-+    /* 
-+     * status[1:0]=2'h2;   - (0x10 - 1000 Mbps , 0x01 - 100Mbps, 0x0 - 10 Mbps)
-+     * status[2]=1'h1;     - Tx Mac En
-+     * status[3]=1'h1;     - Rx Mac En
-+     * status[4]=1'h1;     - Tx Flow Ctrl En
-+     * status[5]=1'h1;     - Rx Flow Ctrl En
-+     * status[6]=1'h1;     - Duplex Mode
-+     */
-+    athrs26_reg_write(PORT_STATUS_REGISTER1, 0x200);  /* LAN - 1 */
-+    athrs26_reg_write(PORT_STATUS_REGISTER2, 0x200);  /* LAN - 2 */
-+    athrs26_reg_write(PORT_STATUS_REGISTER3, 0x200);  /* LAN - 3 */
-+    athrs26_reg_write(PORT_STATUS_REGISTER4, 0x200);  /* LAN - 4 */
-+
-+    /* QM Control */
-+    athrs26_reg_write(0x38, 0xc000050e);
-+  
-+    /*
-+     * status[11]=1'h0;    - CPU Disable
-+     * status[7] = 1'b1;   - Learn One Lock
-+     * status[14] = 1'b0;  - Learn Enable
-+     */
-+    if (mac_has_flag(mac,ATHR_S26_HEADER))
-+        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x4804);
-+    else 
-+        athrs26_reg_write(PORT_CONTROL_REGISTER0, 0x4004);
-+
-+    /* Tag Priority Mapping */
-+    athrs26_reg_write(0x70, 0xfa50);
-+
-+    /* Enable ARP packets to CPU port */
-+    athrs26_reg_write(S26_ARL_TBL_CTRL_REG,(athrs26_reg_read(S26_ARL_TBL_CTRL_REG) | 0x100000));
-+
-+    /* Enable Broadcast packets to CPU port */
-+    athrs26_reg_write(S26_FLD_MASK_REG,(athrs26_reg_read(S26_FLD_MASK_REG) | S26_ENABLE_CPU_BROADCAST ));
-+
-+    /* Turn on back pressure */
-+    athrs26_reg_write(PORT_STATUS_REGISTER0,
-+        (athrs26_reg_read(PORT_STATUS_REGISTER0) | 0x80));
-+    athrs26_reg_write(PORT_STATUS_REGISTER1,
-+        (athrs26_reg_read(PORT_STATUS_REGISTER1) | 0x80));
-+    athrs26_reg_write(PORT_STATUS_REGISTER2,
-+        (athrs26_reg_read(PORT_STATUS_REGISTER2) | 0x80));
-+    athrs26_reg_write(PORT_STATUS_REGISTER3,
-+        (athrs26_reg_read(PORT_STATUS_REGISTER3) | 0x80));
-+    athrs26_reg_write(PORT_STATUS_REGISTER4,
-+        (athrs26_reg_read(PORT_STATUS_REGISTER4) | 0x80));
-+
-+    DPRINTF("S26 CPU_PORT_REGISTER :%x\n", athrs26_reg_read ( CPU_PORT_REGISTER ));
-+    DPRINTF("S26 PORT_STATUS_REGISTER0  :%x\n", athrs26_reg_read ( PORT_STATUS_REGISTER0 ));
-+    DPRINTF("S26 PORT_STATUS_REGISTER1  :%x\n", athrs26_reg_read ( PORT_STATUS_REGISTER1 ));
-+    DPRINTF("S26 PORT_STATUS_REGISTER2  :%x\n", athrs26_reg_read ( PORT_STATUS_REGISTER2 ));
-+    DPRINTF("S26 PORT_STATUS_REGISTER3  :%x\n", athrs26_reg_read ( PORT_STATUS_REGISTER3 ));
-+    DPRINTF("S26 PORT_STATUS_REGISTER4  :%x\n", athrs26_reg_read ( PORT_STATUS_REGISTER4 ));
-+
-+    DPRINTF("S26 PORT_CONTROL_REGISTER0 :%x\n", athrs26_reg_read ( PORT_CONTROL_REGISTER0 ));
-+    DPRINTF("S26 PORT_CONTROL_REGISTER1 :%x\n", athrs26_reg_read ( PORT_CONTROL_REGISTER1 ));
-+    DPRINTF("S26 PORT_CONTROL_REGISTER2 :%x\n", athrs26_reg_read ( PORT_CONTROL_REGISTER2 ));
-+    DPRINTF("S26 PORT_CONTROL_REGISTER3 :%x\n", athrs26_reg_read ( PORT_CONTROL_REGISTER3 ));
-+    DPRINTF("S26 PORT_CONTROL_REGISTER4 :%x\n", athrs26_reg_read ( PORT_CONTROL_REGISTER4 ));
-+
-+    if (mac_has_flag(mac,WAN_QOS_SOFT_CLASS)) {
-+        athrs26_reg_write(ATHR_PRI_CTRL_PORT_2,(athrs26_reg_read(ATHR_PRI_CTRL_PORT_2)|ATHR_TOS_PRI_EN));
-+        athrs26_reg_write(ATHR_PRI_CTRL_PORT_3,(athrs26_reg_read(ATHR_PRI_CTRL_PORT_3)|ATHR_TOS_PRI_EN));
-+        athrs26_reg_write(ATHR_PRI_CTRL_PORT_4,(athrs26_reg_read(ATHR_PRI_CTRL_PORT_4)|ATHR_TOS_PRI_EN));
-+        athrs26_reg_write(ATHR_PRI_CTRL_PORT_5,(athrs26_reg_read(ATHR_PRI_CTRL_PORT_5)|ATHR_TOS_PRI_EN));
-+        athrs26_reg_write(ATHR_QOS_MODE_REGISTER,ATHR_QOS_FIXED_PRIORITY);
-+
-+    }
-+    /* Disable WAN mac inside S26 */
-+    athrs26_reg_write(PORT_STATUS_REGISTER5,0x0);
-+#ifdef CONFIG_AR7240_S26_VLAN_IGMP
-+    /* Set Max MTU to 1518+6 for vlan and header space. */
-+    athrs26_reg_write(0x30,(athrs26_reg_read(0x30)&0xfffff800)|0x5f4);
-+#endif
-+    if(mac_has_flag(mac,ATHR_S26_HEADER))
-+        /* Set CPU port0 to Atheros Header Enable. */
-+        athrs26_reg_write(0x104,athrs26_reg_read(0x104)|(0x1<<11));
-+    /* Enable WAN mac inside S26 */
-+    if (mac_has_flag(mac,ETH_SWONLY_MODE))
-+        athrs26_reg_write(PORT_STATUS_REGISTER5,0x200);
-+
-+    athr26_init_flag1 = 1;
-+}
-+static unsigned int phy_val_saved = 0;
-+/******************************************************************************
-+*
-+* athrs26_phy_off - power off the phy to change its speed
-+*
-+* Power off the phy
-+*/
-+void athrs26_phy_off(ag7240_mac_t *mac)
-+{
-+    struct net_device  *dev = mac->mac_dev;
-+    
-+    if (mac->mac_unit == ENET_UNIT_LAN)
-+        return;
-+        
-+    netif_carrier_off(dev);
-+    netif_stop_queue(dev);
-+
-+    phy_val_saved = s26_rd_phy(ATHR_PHY4_ADDR,ATHR_PHY_CONTROL);
-+    s26_wr_phy( ATHR_PHY4_ADDR, ATHR_PHY_CONTROL, phy_val_saved | 0x800);
-+}
-+
-+/******************************************************************************
-+*
-+* athrs26_phy_on - power on the phy after speed changed
-+*
-+* Power on the phy
-+*/
-+void athrs26_phy_on(ag7240_mac_t *mac)
-+{
-+    if ((mac->mac_unit == ENET_UNIT_LAN) || (phy_val_saved == 0))
-+        return;
-+
-+    s26_wr_phy( ATHR_PHY4_ADDR, ATHR_PHY_CONTROL, phy_val_saved & 0xf7ff);
-+
-+    mdelay(2000);
-+}
-+
-+/******************************************************************************
-+*
-+* athrs26_mac_speed_set - set mac in s26 speed mode (actually RMII mode)
-+*
-+* Set mac speed mode
-+*/
-+void athrs26_mac_speed_set(ag7240_mac_t *mac, ag7240_phy_speed_t speed)
-+{
-+    if ((mac->mac_unit == ENET_UNIT_LAN))
-+        return;
-+    
-+    switch (speed) {
-+        case AG7240_PHY_SPEED_100TX:
-+            athrs26_reg_write (0x600, 0x7d);
-+            break;
-+           
-+        case AG7240_PHY_SPEED_10T:
-+            athrs26_reg_write (0x600, 0x7c);
-+            break; 
-+        
-+        default:
-+            break;  
-+    }
-+}
-+
-+/******************************************************************************
-+*
-+* athrs26_phy_is_link_alive - test to see if the specified link is alive
-+*
-+* RETURNS:
-+*    TRUE  --> link is alive
-+*    FALSE --> link is down
-+*/
-+BOOL
-+athrs26_phy_is_link_alive(int phyUnit)
-+{
-+    uint16_t phyHwStatus;
-+    uint32_t phyBase;
-+    uint32_t phyAddr;
-+
-+    phyBase = ATHR_PHYBASE(phyUnit);
-+    phyAddr = ATHR_PHYADDR(phyUnit);
-+    phyHwStatus = s26_rd_phy( phyAddr, ATHR_PHY_SPEC_STATUS);
-+    if (phyHwStatus & ATHR_STATUS_LINK_PASS) 
-+        return TRUE;
-+
-+    return FALSE;
-+}
-+
-+/******************************************************************************
-+*
-+* athrs26_phy_setup - reset and setup the PHY associated with
-+* the specified MAC unit number.
-+*
-+* Resets the associated PHY port.
-+*
-+* RETURNS:
-+*    TRUE  --> associated PHY is alive
-+*    FALSE --> no LINKs on this ethernet unit
-+*/
-+
-+BOOL
-+athrs26_phy_setup(int ethUnit)
-+{
-+    int       phyUnit;
-+    uint16_t  phyHwStatus;
-+    uint16_t  timeout;
-+    int       liveLinks = 0;
-+    uint32_t  phyBase = 0;
-+    BOOL      foundPhy = FALSE;
-+    uint32_t  phyAddr = 0;
-+    uint32_t  ar7240_revid;
-+    
-+
-+    /* See if there's any configuration data for this enet */
-+    /* start auto negogiation on each phy */
-+    for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
-+        
-+        foundPhy = TRUE;
-+        phyBase = ATHR_PHYBASE(phyUnit);
-+        phyAddr = ATHR_PHYADDR(phyUnit);
-+
-+        if (!ATHR_IS_ETHUNIT(phyUnit, ethUnit)) {
-+            continue;
-+        }
-+
-+        s26_wr_phy(phyAddr, ATHR_AUTONEG_ADVERT,ATHR_ADVERTISE_ALL);
-+        DPRINTF("%s ATHR_AUTONEG_ADVERT %d :%x\n",__func__,phyAddr, 
-+            s26_rd_phy(phyAddr,ATHR_AUTONEG_ADVERT));
-+
-+        ar7240_revid = ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK;
-+        if(ar7240_revid != AR7240_REV_1_0) {
-+            s26_wr_phy( phyAddr, ATHR_PHY_CONTROL,ATHR_CTRL_AUTONEGOTIATION_ENABLE
-+                      | ATHR_CTRL_SOFTWARE_RESET);
-+        }
-+
-+        DPRINTF("%s ATHR_PHY_CONTROL %d :%x\n",__func__,phyAddr, 
-+           s26_rd_phy(phyAddr,ATHR_PHY_CONTROL));
-+    }
-+
-+    if (!foundPhy) {
-+        return FALSE; /* No PHY's configured for this ethUnit */
-+    }
-+    
-+    /*
-+     * After the phy is reset, it takes a little while before
-+     * it can respond properly.
-+     */
-+    if (ethUnit == ENET_UNIT_LAN)
-+        mdelay(1000);
-+    else
-+        mdelay(3000);
-+    
-+    /*
-+     * Wait up to 3 seconds for ALL associated PHYs to finish
-+     * autonegotiation.  The only way we get out of here sooner is
-+     * if ALL PHYs are connected AND finish autonegotiation.
-+     */
-+    for (phyUnit=0; (phyUnit < ATHR_PHY_MAX) /*&& (timeout > 0) */; phyUnit++) {
-+
-+        if ((ATHR_ETHUNIT(phyUnit) == ENET_UNIT_WAN) &&
-+                !mac_has_flag(ag7240_macs[ENET_UNIT_LAN],ETH_SWONLY_MODE))
-+            continue;
-+
-+        timeout=20;
-+        for (;;) {
-+            phyHwStatus =  s26_rd_phy(phyAddr, ATHR_PHY_CONTROL);
-+
-+            if (ATHR_RESET_DONE(phyHwStatus)) {
-+                DRV_PRINT(DRV_DEBUG_PHYSETUP,
-+                          ("Port %d, Neg Success\n", phyUnit));
-+                break;
-+            }
-+            if (timeout == 0) {
-+                DRV_PRINT(DRV_DEBUG_PHYSETUP,
-+                          ("Port %d, Negogiation timeout\n", phyUnit));
-+                break;
-+            }
-+            if (--timeout == 0) {
-+                DRV_PRINT(DRV_DEBUG_PHYSETUP,
-+                          ("Port %d, Negogiation timeout\n", phyUnit));
-+                break;
-+            }
-+
-+            mdelay(150);
-+        }
-+
-+        /* fix IOT */
-+        s26_wr_phy(phyUnit, 29, 0x14);
-+        s26_wr_phy( phyUnit, 30, 0x1352);
-+        
-+#ifdef S26_VER_1_0
-+        /* turn off power saving */
-+        s26_wr_phy(phyUnit, 29, 41);
-+        s26_wr_phy(phyUnit, 30, 0);
-+        printk("def_ S26_VER_1_0\n");
-+#endif
-+    }
-+
-+    /*
-+     * All PHYs have had adequate time to autonegotiate.
-+     * Now initialize software status.
-+     *
-+     * It's possible that some ports may take a bit longer
-+     * to autonegotiate; but we can't wait forever.  They'll
-+     * get noticed by mv_phyCheckStatusChange during regular
-+     * polling activities.
-+     */
-+    for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
-+        if (!ATHR_IS_ETHUNIT(phyUnit, ethUnit)) {
-+            continue;
-+        }
-+
-+        if (athrs26_phy_is_link_alive(phyUnit)) {
-+            liveLinks++;
-+            ATHR_IS_PHY_ALIVE(phyUnit) = TRUE;
-+        } else {
-+            ATHR_IS_PHY_ALIVE(phyUnit) = FALSE;
-+        }
-+        DRV_PRINT(DRV_DEBUG_PHYSETUP,
-+            ("eth%d: Phy Specific Status=%4.4x\n",
-+            ethUnit, 
-+            s26_rd_phy(ATHR_PHYADDR(phyUnit),ATHR_PHY_SPEC_STATUS)));
-+    }
-+
-+    return (liveLinks > 0);
-+}
-+
-+/******************************************************************************
-+*
-+* athrs26_phy_is_fdx - Determines whether the phy ports associated with the
-+* specified device are FULL or HALF duplex.
-+*
-+* RETURNS:
-+*    1 --> FULL
-+*    0 --> HALF
-+*/
-+int
-+athrs26_phy_is_fdx(int ethUnit,int phyUnit)
-+{
-+    uint32_t  phyBase;
-+    uint32_t  phyAddr;
-+    uint16_t  phyHwStatus;
-+    int       ii = 200;
-+
-+    if (athrs26_phy_is_link_alive(phyUnit)) {
-+
-+        phyBase = ATHR_PHYBASE(phyUnit);
-+        phyAddr = ATHR_PHYADDR(phyUnit);
-+
-+        do {
-+            phyHwStatus = s26_rd_phy(ATHR_PHYADDR(phyUnit),ATHR_PHY_SPEC_STATUS);
-+            mdelay(10);
-+        } while((!(phyHwStatus & ATHR_STATUS_RESOVLED)) && --ii);
-+            
-+        if (phyHwStatus & ATHER_STATUS_FULL_DUPLEX)
-+            return TRUE;
-+    }
-+
-+    return FALSE;
-+}
-+
-+/******************************************************************************
-+*
-+* athrs26_phy_stab_wr - Function to Address 100Mbps stability issue, as 
-+* suggested by EBU.
-+*
-+* RETURNS: none
-+*
-+*/
-+void athrs26_phy_stab_wr(int phy_id, BOOL phy_up, int phy_speed)
-+{
-+    if( phy_up && (phy_speed == AG7240_PHY_SPEED_100TX)) {
-+        s26_wr_phy(ATHR_PHYADDR(phy_id), ATHR_DEBUG_PORT_ADDRESS, 0x18);
-+        s26_wr_phy(ATHR_PHYADDR(phy_id), ATHR_DEBUG_PORT_DATA, 0xBA8);
-+    } else {
-+        s26_wr_phy(ATHR_PHYADDR(phy_id), ATHR_DEBUG_PORT_ADDRESS, 0x18);
-+        s26_wr_phy(ATHR_PHYADDR(phy_id), ATHR_DEBUG_PORT_DATA, 0x2EA);       
-+    }
-+}
-+
-+/******************************************************************************
-+*
-+* athrs26_phy_speed - Determines the speed of phy ports associated with the
-+* specified device.
-+*
-+* RETURNS:
-+*               AG7240_PHY_SPEED_10T, AG7240_PHY_SPEED_100TX;
-+*               AG7240_PHY_SPEED_1000T;
-+*/
-+
-+int
-+athrs26_phy_speed(int ethUnit,int phyUnit)
-+{
-+    uint16_t  phyHwStatus;
-+    uint32_t  phyBase;
-+    uint32_t  phyAddr;
-+    int       ii = 200;
-+
-+
-+    if (athrs26_phy_is_link_alive(phyUnit)) {
-+
-+        phyBase = ATHR_PHYBASE(phyUnit);
-+        phyAddr = ATHR_PHYADDR(phyUnit);
-+        do {
-+            phyHwStatus = s26_rd_phy(ATHR_PHYADDR(phyUnit),ATHR_PHY_SPEC_STATUS);
-+            mdelay(10);
-+        } while((!(phyHwStatus & ATHR_STATUS_RESOVLED)) && --ii);
-+        
-+        phyHwStatus = ((phyHwStatus & ATHER_STATUS_LINK_MASK) >>
-+                       ATHER_STATUS_LINK_SHIFT);
-+
-+        switch(phyHwStatus) {
-+        case 0:
-+            return AG7240_PHY_SPEED_10T;
-+        case 1:
-+            return AG7240_PHY_SPEED_100TX;
-+        case 2:
-+            return AG7240_PHY_SPEED_1000T;
-+        default:
-+            printk("Unkown speed read!\n");
-+        }
-+    }
-+
-+    return AG7240_PHY_SPEED_10T;
-+}
-+
-+/*****************************************************************************
-+*
-+* athr_phy_is_up -- checks for significant changes in PHY state.
-+*
-+* A "significant change" is:
-+*     dropped link (e.g. ethernet cable unplugged) OR
-+*     autonegotiation completed + link (e.g. ethernet cable plugged in)
-+*
-+* When a PHY is plugged in, phyLinkGained is called.
-+* When a PHY is unplugged, phyLinkLost is called.
-+*/
-+
-+int
-+athrs26_phy_is_up(int ethUnit)
-+{
-+    int           phyUnit;
-+    uint16_t      phyHwStatus, phyHwControl;
-+    athrPhyInfo_t *lastStatus;
-+    int           linkCount   = 0;
-+    int           lostLinks   = 0;
-+    int           gainedLinks = 0;
-+    uint32_t      phyBase;
-+    uint32_t      phyAddr;
-+
-+    for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
-+
-+        if(mac_has_flag(ag7240_macs[ENET_UNIT_LAN],ETH_SWONLY_MODE))
-+            ethUnit = ENET_UNIT_LAN;
-+
-+        if (!ATHR_IS_ETHUNIT(phyUnit,ethUnit))
-+            continue;
-+
-+        phyBase = ATHR_PHYBASE(phyUnit);
-+        phyAddr = ATHR_PHYADDR(phyUnit);
-+
-+        lastStatus = &athrPhyInfo[phyUnit];
-+
-+        if (lastStatus->isPhyAlive) { /* last known link status was ALIVE */
-+
-+            phyHwStatus = s26_rd_phy(ATHR_PHYADDR(phyUnit),ATHR_PHY_SPEC_STATUS);
-+
-+            /* See if we've lost link */
-+            if (phyHwStatus & ATHR_STATUS_LINK_PASS) { /* check realtime link */
-+                linkCount++;
-+            } else {
-+                phyHwStatus = s26_rd_phy(ATHR_PHYADDR(phyUnit),ATHR_PHY_STATUS);
-+            /* If realtime failed check link in latch register before
-+             * asserting link down.
-+             */
-+                if (phyHwStatus & ATHR_LATCH_LINK_PASS)     
-+                    linkCount++;
-+                else
-+                    lostLinks++;
-+                DRV_PRINT(DRV_DEBUG_PHYCHANGE,("\nenet%d port%d down\n",
-+                                               ethUnit, phyUnit));
-+                lastStatus->isPhyAlive = FALSE;
-+            }
-+        } else { /* last known link status was DEAD */
-+
-+            /* Check for reset complete */
-+
-+            phyHwStatus = s26_rd_phy(ATHR_PHYADDR(phyUnit),ATHR_PHY_STATUS);
-+
-+            if (!ATHR_RESET_DONE(phyHwStatus))
-+                continue;
-+
-+                phyHwControl = s26_rd_phy(ATHR_PHYADDR(phyUnit),ATHR_PHY_CONTROL);
-+
-+            /* Check for AutoNegotiation complete */ 
-+           
-+            if ((!(phyHwControl & ATHR_CTRL_AUTONEGOTIATION_ENABLE)) 
-+                 || ATHR_AUTONEG_DONE(phyHwStatus)) {
-+                phyHwStatus = s26_rd_phy(ATHR_PHYADDR(phyUnit),ATHR_PHY_SPEC_STATUS);
-+
-+                if (phyHwStatus & ATHR_STATUS_LINK_PASS) {
-+                    gainedLinks++;
-+                    linkCount++;
-+                    DRV_PRINT(DRV_DEBUG_PHYCHANGE,("\nenet%d port%d up\n",
-+                                               ethUnit, phyUnit));
-+                    lastStatus->isPhyAlive = TRUE;
-+                }  
-+            }
-+        }
-+    }
-+    return (linkCount);
-+
-+}
-+
-+void athrs26_reg_dev(ag7240_mac_t **mac)
-+{
-+    if( mac[0]) {
-+        ag7240_macs[0] = mac[0];
-+        ag7240_macs[0]->mac_speed = 0xff;
-+    }
-+    else 
-+        printk("MAC [0] not registered \n");
-+   
-+    if( mac[1]) {
-+        ag7240_macs[1] = mac[1];
-+        ag7240_macs[1]->mac_speed = 0xff;
-+    }
-+    else 
-+        printk("MAC [1] not registered \n");
-+    return;
-+
-+}
-+
-+uint32_t athrs26_reg_read(unsigned int s26_addr)
-+{
-+    unsigned int addr_temp;
-+    unsigned int s26_rd_csr_low, s26_rd_csr_high, s26_rd_csr;
-+    unsigned int data,unit = 0;
-+    unsigned int phy_address, reg_address;
-+
-+    addr_temp = (s26_addr & 0xfffffffc) >>2;
-+    data = addr_temp >> 7;
-+
-+    phy_address = 0x1f;
-+    reg_address = 0x10;
-+
-+    if (is_ar7240()) {
-+        unit = 0;
-+    } 
-+    else if(is_ar7241() || is_ar7242()) {
-+        unit = 1;
-+    }
-+
-+    phy_reg_write(unit,phy_address, reg_address, data);
-+
-+    phy_address = (0x17 & ((addr_temp >> 4) | 0x10));
-+    reg_address = ((addr_temp << 1) & 0x1e);
-+    s26_rd_csr_low = (uint32_t) phy_reg_read(unit,phy_address, reg_address);
-+
-+    reg_address = reg_address | 0x1;
-+    s26_rd_csr_high = (uint32_t) phy_reg_read(unit,phy_address, reg_address);
-+    s26_rd_csr = (s26_rd_csr_high << 16) | s26_rd_csr_low ;
-+
-+    return(s26_rd_csr);
-+}
-+
-+void athrs26_reg_write(unsigned int s26_addr, unsigned int s26_write_data)
-+{
-+    unsigned int addr_temp;
-+    unsigned int data;
-+    unsigned int phy_address, reg_address,unit = 0;
-+
-+
-+    addr_temp = (s26_addr &  0xfffffffc) >>2;
-+    data = addr_temp >> 7;
-+
-+    phy_address = 0x1f;
-+    reg_address = 0x10;
-+
-+    if (is_ar7240()) {
-+        unit = 0;
-+    } 
-+    else if(is_ar7241() || is_ar7242()) {
-+        unit = 1;
-+    }
-+
-+    phy_reg_write(unit,phy_address, reg_address, data);
-+
-+    phy_address = (0x17 & ((addr_temp >> 4) | 0x10));
-+
-+    reg_address = (((addr_temp << 1) & 0x1e) | 0x1);
-+    data = s26_write_data >> 16;
-+    phy_reg_write(unit,phy_address, reg_address, data);
-+    
-+    reg_address = ((addr_temp << 1) & 0x1e);
-+    data = s26_write_data  & 0xffff;
-+    phy_reg_write(unit,phy_address, reg_address, data);
-+}
-+
-+void athrs26_reg_rmw(unsigned int s26_addr, unsigned int s26_write_data) 
-+{
-+    int val = athrs26_reg_read(s26_addr);
-+    athrs26_reg_write(s26_addr,(val | s26_write_data));
-+}
-+
-+unsigned int s26_rd_phy(unsigned int phy_addr, unsigned int reg_addr)
-+{
-+
-+     unsigned int rddata;
-+
-+     if(phy_addr >= ATHR_PHY_MAX) {
-+         DPRINTF("%s:Error invalid Phy Address:0x%x\n",__func__,phy_addr);
-+         return -1 ;
-+     }
-+
-+    /* MDIO_CMD is set for read */
-+
-+    rddata = athrs26_reg_read(0x98);
-+    rddata = (rddata & 0x0) | (reg_addr<<16) 
-+              | (phy_addr<<21) | (1<<27) 
-+              | (1<<30) | (1<<31) ;
-+
-+    athrs26_reg_write(0x98, rddata);
-+
-+    rddata = athrs26_reg_read(0x98);
-+    rddata = rddata & (1<<31);
-+
-+    /* Check MDIO_BUSY status */
-+    while(rddata){
-+        rddata = athrs26_reg_read(0x98);
-+        rddata = rddata & (1<<31);
-+    }
-+
-+    /* Read the data from phy */
-+
-+    rddata = athrs26_reg_read(0x98) & 0xffff;
-+
-+    return(rddata);
-+}
-+
-+void s26_wr_phy(unsigned int phy_addr, unsigned int reg_addr, unsigned int write_data)
-+{
-+    unsigned int rddata;
-+    
-+    if(phy_addr >= ATHR_PHY_MAX) {
-+        DPRINTF("%s:Error invalid Phy Address:0x%x\n",__func__,phy_addr);
-+        return ;
-+    }
-+
-+    /* MDIO_CMD is set for read */
-+
-+    rddata = athrs26_reg_read(0x98);
-+    rddata = (rddata & 0x0) | (write_data & 0xffff) 
-+               | (reg_addr<<16) | (phy_addr<<21) 
-+               | (0<<27) | (1<<30) | (1<<31) ;
-+
-+    athrs26_reg_write(0x98, rddata);
-+
-+    rddata = athrs26_reg_read(0x98);
-+    rddata = rddata & (1<<31);
-+
-+    /* Check MDIO_BUSY status */
-+    while(rddata){
-+        rddata = athrs26_reg_read(0x98);
-+        rddata = rddata & (1<<31);
-+    }
-+
-+}
-+int athrs26_ioctl(struct net_device *dev,void *args, int cmd)
-+{
-+    struct ifreq * ifr = (struct ifreq *) args;
-+    struct eth_cfg_params *ethcfg;
-+    uint32_t ar7240_revid;
-+    ag7240_mac_t *mac;
-+
-+#ifdef CONFIG_AR7240_S26_VLAN_IGMP
-+    struct arl_struct * arl = (struct arl_struct *) (&ifr->ifr_ifru.ifru_mtu);
-+    unsigned int vlan_value = ifr->ifr_ifru.ifru_ivalue;
-+    unsigned short vlan_id = vlan_value >> 16;
-+    unsigned short mode = vlan_value >> 16;
-+    unsigned short vlan_port = vlan_value & 0x1f;
-+    unsigned int flag = 0;
-+    uint32_t ret = 0;
-+#endif
-+
-+    ethcfg = (struct eth_cfg_params *)ifr->ifr_data;
-+
-+    switch(cmd){
-+#ifdef CONFIG_AR7240_S26_VLAN_IGMP
-+        case S26_PACKET_FLAG:
-+            printk("ag7240::S26_PACKET_FLAG %d \n",vlan_value);
-+            set_packet_inspection_flag(vlan_value);
-+            break;
-+
-+        case S26_VLAN_ADDPORTS:
-+            if(vlan_id>4095) return -EINVAL;
-+            printk("ag7240::S26_ADD_PORT vid = %d ports=%x.\n",vlan_id,vlan_port);
-+            ret = python_ioctl_vlan_addports(vlan_id,vlan_port);
-+            break;
-+
-+        case S26_VLAN_DELPORTS:
-+            if(vlan_id>4095) return -EINVAL;
-+            printk("ag7240::S26_DEL_PORT vid = %d ports=%x.\n",vlan_id,vlan_port);
-+            ret = python_ioctl_vlan_delports(vlan_id,vlan_port);
-+            break;
-+
-+        case S26_VLAN_SETTAGMODE:
-+            printk("ag7240::S26_VLAN_SETTAGMODE mode=%d portno=%d .\n",mode,vlan_port);
-+            ret = python_port_egvlanmode_set(vlan_port,mode);
-+            break;
-+
-+        case S26_VLAN_SETDEFAULTID:
-+            if(vlan_id>4095) return -EINVAL;
-+            printk("ag7240::S26_VLAN_SETDEFAULTID vid = %d portno=%d.\n",vlan_id,vlan_port);
-+            ret = python_port_default_vid_set(vlan_port,vlan_id);
-+            break;
-+
-+        case  S26_IGMP_ON_OFF:
-+        {
-+            int tmp = 0;
-+            tmp = vlan_value & (0x1 << 7);
-+            vlan_port &= ~(0x1 << 7);
-+            if(vlan_port>4) return -EINVAL;
-+            if(tmp != 0){
-+                printk("ag7240::Enable IGMP snooping in port no %x.\n",vlan_port);
-+                ret= python_port_igmps_status_set(vlan_port,1);
-+            }else{
-+                printk("ag7240::Disable IGMP snooping in port no %x.\n",vlan_port);
-+                ret= python_port_igmps_status_set(vlan_port,0);
-+            }
-+        }
-+            break;
-+
-+        case S26_LINK_GETSTAT:
-+            if(vlan_port>4){/* if port=WAN */
-+                int fdx, phy_up;
-+                ag7240_phy_speed_t  speed;
-+                ag7240_get_link_status(0, &phy_up, &fdx, &speed, 4);
-+                ifr->ifr_ifru.ifru_ivalue = (speed<<16|fdx<<8|phy_up);
-+                printk("ag7240::S26_LINK_GETSTAT portno WAN is %x.\n",ifr->ifr_ifru.ifru_ivalue);
-+            }else if(vlan_port > 0){
-+                flag = athrs26_phy_is_link_alive(vlan_port-1);
-+                ifr->ifr_ifru.ifru_ivalue = flag;
-+                printk("ag7240::S26_LINK_GETSTAT portno %d is %s.\n",vlan_port,flag?"up":"down");
-+            }else{
-+                ifr->ifr_ifru.ifru_ivalue = 1;
-+            }
-+            /* PHY 0-4 <---> port 1-5 in user space. */
-+            break;
-+
-+        case S26_VLAN_ENABLE:
-+            python_ioctl_enable_vlan();
-+            printk("ag7240::S26_VLAN_ENABLE.\n");
-+            break;
-+
-+        case S26_VLAN_DISABLE:
-+            python_ioctl_disable_vlan();
-+            printk("ag7240::S26_VLAN_DISABLE.\n");
-+            break;
-+
-+        case S26_ARL_ADD:
-+            ret = python_fdb_add(arl->mac_addr,arl->port_map,arl->sa_drop);
-+            printk("ag7240::S26_ARL_ADD,mac:[%x.%x.%x.%x.%x.%x] port[%x] drop %d\n",
-+                arl->mac_addr.uc[0],arl->mac_addr.uc[1],arl->mac_addr.uc[2],arl->mac_addr.uc[3],
-+                arl->mac_addr.uc[4],arl->mac_addr.uc[5],arl->port_map,arl->sa_drop);
-+            break;
-+
-+        case S26_ARL_DEL:
-+            ret = python_fdb_del(arl->mac_addr);
-+            printk("ag7240::S26_ARL_DEL mac:[%x.%x.%x.%x.%x.%x].\n",arl->mac_addr.uc[0],arl->mac_addr.uc[1],
-+            arl->mac_addr.uc[2],arl->mac_addr.uc[3],arl->mac_addr.uc[4],arl->mac_addr.uc[5]);
-+            break;
-+        case S26_MCAST_CLR:
-+            /* 0: switch off the unkown multicast packets over vlan. 1: allow the unknown multicaset packets over vlans. */
-+            if(!vlan_value)
-+                python_clear_multi();
-+            else
-+                python_set_multi();
-+                printk("athr_gmac::S26_MCAST_CLR --- %s.\n", vlan_value?"enable Multicast":"disable Multicast");
-+            break;
-+#endif
-+        case S26_RD_PHY: 
-+            if(ethcfg->portnum != 0xf)
-+                ethcfg->val = s26_rd_phy(ethcfg->portnum,ethcfg->phy_reg);
-+            else
-+                ethcfg->val = athrs26_reg_read(ethcfg->phy_reg);
-+            break;
-+        
-+        case S26_WR_PHY:
-+            if(ethcfg->portnum != 0xf)
-+                s26_wr_phy(ethcfg->portnum,ethcfg->phy_reg,ethcfg->val);
-+            else
-+                athrs26_reg_write(ethcfg->phy_reg,ethcfg->val);
-+            break;
-+        case S26_FORCE_PHY:
-+            printk("Duplex %d\n",ethcfg->duplex);
-+            if(ethcfg->phy_reg < ATHR_PHY_MAX) {
-+                if(ethcfg->val == 10) {
-+                    printk("Forcing 10Mbps %s on port:%d \n",
-+                         dup_str[ethcfg->duplex],(ethcfg->phy_reg));
-+                    athrs26_force_10M(ethcfg->phy_reg,ethcfg->duplex);
-+                }else if(ethcfg->val == 100) {
-+                    printk("Forcing 100Mbps %s on port:%d \n",
-+                         dup_str[ethcfg->duplex],(ethcfg->phy_reg));
-+                    athrs26_force_100M(ethcfg->phy_reg,ethcfg->duplex);
-+                }else if(ethcfg->val == 0) {
-+                    printk("Enabling Auto Neg on port:%d \n",(ethcfg->phy_reg));
-+                    ar7240_revid = ar7240_reg_rd(AR7240_REV_ID) & AR7240_REV_ID_MASK;
-+
-+                    if(ar7240_revid == AR7240_REV_1_0) {
-+                        s26_wr_phy(ethcfg->phy_reg,ATHR_DEBUG_PORT_ADDRESS,0x0);
-+                        s26_wr_phy(ethcfg->phy_reg,ATHR_DEBUG_PORT_DATA,0x2ee);
-+                        s26_wr_phy(ethcfg->phy_reg,ATHR_DEBUG_PORT_ADDRESS,0x3);
-+                        s26_wr_phy(ethcfg->phy_reg,ATHR_DEBUG_PORT_DATA,0x3a11);
-+                    }
-+                    s26_wr_phy(ethcfg->phy_reg,ATHR_PHY_CONTROL,0x9000);
-+               }else
-+                   return -EINVAL;
-+
-+               if(ATHR_ETHUNIT(ethcfg->phy_reg) == ENET_UNIT_WAN) {
-+                   if(mac_has_flag(ag7240_macs[ENET_UNIT_LAN],ETH_SWONLY_MODE))
-+                       ag7240_check_link(ag7240_macs[ENET_UNIT_LAN],ethcfg->phy_reg);
-+                   else
-+                       ag7240_check_link(ag7240_macs[0],ethcfg->phy_reg);
-+               }else{ 
-+                   ag7240_check_link(ag7240_macs[1],ethcfg->phy_reg);
-+               }
-+            break;
-+            } 
-+        default: 
-+            return -EINVAL;
-+        }
-+    return 0;
-+}
-+
-+int athrs26_mdc_check()
-+{
-+    int i;
-+
-+    for (i=0; i<4000; i++) {
-+        if(athrs26_reg_read(0x10c) != 0x18007fff)
-+            return -1;
-+    }
-+    return 0;
-+}
-+
-+void ar7240_s26_intr(void)
-+{
-+    int status = 0, intr_reg_val;
-+    uint32_t phyUnit = 0 ,phyBase = 0 ,phyAddr = 0;
-+    uint32_t phymask = 0x0;
-+    uint32_t linkDown = 0x0;
-+
-+    athrs26_reg_write(S26_GLOBAL_INTR_MASK_REG,0x0); 
-+
-+    intr_reg_val = athrs26_reg_read(S26_GLOBAL_INTR_REG);
-+
-+    /* clear global link interrupt */
-+    athrs26_reg_write(S26_GLOBAL_INTR_REG,intr_reg_val);
-+
-+    if (intr_reg_val & PHY_LINK_CHANGE_REG) {
-+
-+       for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
-+
-+           phyBase = ATHR_PHYBASE(phyUnit);
-+           phyAddr = ATHR_PHYADDR(phyUnit);
-+           status = s26_rd_phy(phyAddr,ATHR_PHY_INTR_STATUS);
-+       
-+           if(status & PHY_LINK_UP) {
-+               DPRINTF("LINK UP - Port %d:%x\n",phyAddr,status);
-+               phymask = (phymask | (1 << phyUnit));
-+           }
-+           if(status & PHY_LINK_DOWN) {
-+               DPRINTF("LINK DOWN - Port %d:%x\n",phyAddr,status);
-+               phymask = (phymask | (1 << phyUnit));
-+               linkDown = (linkDown | (1 << phyUnit));
-+           }
-+           if(status & PHY_LINK_DUPLEX_CHANGE) {
-+               DPRINTF("LINK DUPLEX CHANGE - Port %d:%x\n",phyAddr,status);
-+               phymask = (phymask | (1 << phyUnit));
-+           }
-+           if(status & PHY_LINK_SPEED_CHANGE) {
-+               DPRINTF("LINK SPEED CHANGE %d:%x\n",phyAddr,status);
-+               phymask = (phymask | (1 << phyUnit));
-+           }
-+       }
-+       for (phyUnit=0; phyUnit < ATHR_PHY_MAX; phyUnit++) {
-+           if ((phymask >> phyUnit) & 0x1) {
-+
-+               phyBase = ATHR_PHYBASE(phyUnit);
-+               phyAddr = ATHR_PHYADDR(phyUnit);
-+
-+               status = s26_rd_phy(phyAddr,ATHR_PHY_INTR_STATUS);
-+                
-+               if (!athrs26_phy_is_link_alive(phyUnit) && !((linkDown >> phyUnit) & 0x1))
-+                        continue;
-+
-+               if(ATHR_ETHUNIT(phyUnit) == ENET_UNIT_WAN) {
-+                    if (mac_has_flag(ag7240_macs[ENET_UNIT_LAN],ETH_SWONLY_MODE))
-+                        ag7240_check_link(ag7240_macs[ENET_UNIT_LAN],phyUnit);
-+                    else
-+                        ag7240_check_link(ag7240_macs[0],phyUnit);
-+               }
-+               else {  
-+                    ag7240_check_link(ag7240_macs[1],phyUnit);
-+               }
-+           }
-+       }
-+       athrs26_reg_write(S26_GLOBAL_INTR_MASK_REG,PHY_LINK_CHANGE_REG); 
-+   }
-+   else  {
-+      DPRINTF("Spurious link interrupt:%s,status:%x\n",__func__,status);    
 +      athrs26_reg_write(S26_GLOBAL_INTR_MASK_REG,PHY_LINK_CHANGE_REG); 
 +   }
 +}
@@ -12973,7 +11565,7 @@ index f30e9b1..8c371a3e 100644
  define Profile/DIR825B1
  	NAME:=D-Link DIR-825 rev. B1
 diff --git a/target/linux/ar71xx/image/Makefile b/target/linux/ar71xx/image/Makefile
-index 7522926..eeaec51 100644
+index 17092b4..11b9c9a 100644
 --- a/target/linux/ar71xx/image/Makefile
 +++ b/target/linux/ar71xx/image/Makefile
 @@ -174,6 +174,7 @@ cameo933x_mtdlayout=mtdparts=spi0.0:64k(u-boot)ro,64k(art)ro,64k(mac)ro,64k(nvra
@@ -12984,7 +11576,7 @@ index 7522926..eeaec51 100644
  dir825b1_mtdlayout=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,1024k(kernel),5184k(rootfs),64k(caldata)ro,1600k(unknown)ro,6208k@0x50000(firmware),64k@0x7f0000(caldata_copy)
  dir825b1_mtdlayout_fat=mtdparts=spi0.0:256k(uboot)ro,64k(config)ro,1024k(kernel),6784k(rootfs),64k(caldata)ro,7808k@0x50000(firmware),64k@0x660000(caldata_orig),6208k@0x50000(firmware_orig)
  ew-dorin_mtdlayout_4M=mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),1024k(kernel),2688k(rootfs),64k(art),3712k@0x50000(firmware)
-@@ -358,6 +359,15 @@ define Image/Build/Cameo933x/initramfs
+@@ -359,6 +360,15 @@ define Image/Build/Cameo933x/initramfs
  	$(call MkuImageLzma/initramfs,$(2),$(3) $(cameo933x_mtdlayout))
  endef
  
@@ -13000,7 +11592,7 @@ index 7522926..eeaec51 100644
  define Image/Build/Cameo934x
  	$(call Image/Build/Cameo,$(1),$(2),$(3),$(cameo934x_mtdlayout),1310720,15007718,$(4))
  endef
-@@ -863,6 +873,8 @@ $(eval $(call SingleProfile,Cameo934x,$(fs_64k),DIR835A1,dir-835-a1,DIR-835-A1,t
+@@ -864,6 +874,8 @@ $(eval $(call SingleProfile,Cameo934x,$(fs_64k),DIR835A1,dir-835-a1,DIR-835-A1,t
  
  $(eval $(call SingleProfile,CyberTAN,$(fs_64k),WRT160NL,wrt160nl,WRT160NL,ttyS0,115200,1.00.01))
  
@@ -13009,56 +11601,11 @@ index 7522926..eeaec51 100644
  $(eval $(call SingleProfile,DIR825B1,$(fs_64k),DIR825B1,dir-825-b1,DIR-825-B1,ttyS0,115200,01AP94-AR7161-RT-080619-00,00AP94-AR7161-RT-080619-00))
  $(eval $(call SingleProfile,DIR825B1,$(fs_64k),TEW673GRU,tew-673gru,TEW-673GRU,ttyS0,115200,01AP94-AR7161-RT-080619-01,00AP94-AR7161-RT-080619-01))
  
-diff --git a/target/linux/ar71xx/patches-3.8/617-MIPS-ath79-add-DIR-632-A1-support.patch b/target/linux/ar71xx/patches-3.8/617-MIPS-ath79-add-DIR-632-A1-support.patch
-new file mode 100644
-index 0000000..b4c5bf2
---- /dev/null
-+++ b/target/linux/ar71xx/patches-3.8/617-MIPS-ath79-add-DIR-632-A1-support.patch
-@@ -0,0 +1,39 @@
-+--- a/arch/mips/ath79/Kconfig
-++++ b/arch/mips/ath79/Kconfig
-+@@ -273,6 +273,16 @@ config ATH79_MACH_DIR_615_C1
-+ 	select ATH79_DEV_WMAC
-+ 	select ATH79_NVRAM
-+ 
-++config ATH79_MACH_DIR_632_A1
-++	bool "D-Link DIR-632 rev. A1 support"
-++	select SOC_AR724X
-++	select ATH79_DEV_ETH
-++	select ATH79_DEV_GPIO_BUTTONS
-++	select ATH79_DEV_LEDS_GPIO
-++	select ATH79_DEV_M25P80
-++	select ATH79_DEV_USB
-++	select ATH79_NVRAM
-++
-+ config ATH79_MACH_DIR_825_B1
-+ 	bool "D-Link DIR-825 rev. B1 board support"
-+ 	select SOC_AR71XX
-+--- a/arch/mips/ath79/machtypes.h
-++++ b/arch/mips/ath79/machtypes.h
-+@@ -38,6 +38,7 @@ enum ath79_mach_type {
-+ 	ATH79_MACH_DIR_600_A1,		/* D-Link DIR-600 rev. A1 */
-+ 	ATH79_MACH_DIR_615_C1,		/* D-Link DIR-615 rev. C1 */
-+ 	ATH79_MACH_DIR_615_E4,		/* D-Link DIR-615 rev. E4 */
-++	ATH79_MACH_DIR_632_A1,		/* D-Link DIR-632 rev. A1 */
-+ 	ATH79_MACH_DIR_825_B1,		/* D-Link DIR-825 rev. B1 */
-+ 	ATH79_MACH_DIR_825_C1,		/* D-Link DIR-825 rev. C1 */
-+ 	ATH79_MACH_DIR_835_A1,		/* D-Link DIR-835 rev. A1 */
-+--- a/arch/mips/ath79/Makefile
-++++ b/arch/mips/ath79/Makefile
-+@@ -54,6 +54,7 @@ obj-$(CONFIG_ATH79_MACH_CAP4200AG)	+= ma
-+ obj-$(CONFIG_ATH79_MACH_DB120)		+= mach-db120.o
-+ obj-$(CONFIG_ATH79_MACH_DIR_600_A1)	+= mach-dir-600-a1.o
-+ obj-$(CONFIG_ATH79_MACH_DIR_615_C1)	+= mach-dir-615-c1.o
-++obj-$(CONFIG_ATH79_MACH_DIR_632_A1)	+= mach-dir-632-a1.o
-+ obj-$(CONFIG_ATH79_MACH_DIR_825_B1)	+= mach-dir-825-b1.o
-+ obj-$(CONFIG_ATH79_MACH_DIR_825_C1)	+= mach-dir-825-c1.o
-+ obj-$(CONFIG_ATH79_MACH_EW_DORIN)	+= mach-ew-dorin.o
-diff --git a/target/linux/ar71xx/patches-3.8/620-net-add-ag7240-driver-for-DIR-632-A1.patch b/target/linux/ar71xx/patches-3.8/620-net-add-ag7240-driver-for-DIR-632-A1.patch
+diff --git a/target/linux/ar71xx/patches-3.8/480-net-add-ag7240-driver-for-DIR-632-A1.patch b/target/linux/ar71xx/patches-3.8/480-net-add-ag7240-driver-for-DIR-632-A1.patch
 new file mode 100644
 index 0000000..5c69157
 --- /dev/null
-+++ b/target/linux/ar71xx/patches-3.8/620-net-add-ag7240-driver-for-DIR-632-A1.patch
++++ b/target/linux/ar71xx/patches-3.8/480-net-add-ag7240-driver-for-DIR-632-A1.patch
 @@ -0,0 +1,19 @@
 +--- a/drivers/net/ethernet/atheros/Makefile
 ++++ b/drivers/net/ethernet/atheros/Makefile
@@ -13079,3 +11626,88 @@ index 0000000..5c69157
 ++source drivers/net/ethernet/atheros/ag7240/Kconfig
 + 
 + endif # NET_VENDOR_ATHEROS
+diff --git a/target/linux/ar71xx/patches-3.8/619-MIPS-ath79-add-DIR-632-A1-support.patch b/target/linux/ar71xx/patches-3.8/619-MIPS-ath79-add-DIR-632-A1-support.patch
+new file mode 100644
+index 0000000..be87881
+--- /dev/null
++++ b/target/linux/ar71xx/patches-3.8/619-MIPS-ath79-add-DIR-632-A1-support.patch
+@@ -0,0 +1,47 @@
++--- a/arch/mips/ath79/Kconfig
+++++ b/arch/mips/ath79/Kconfig
++@@ -273,6 +273,16 @@ config ATH79_MACH_DIR_615_C1
++ 	select ATH79_DEV_WMAC
++ 	select ATH79_NVRAM
++ 
+++config ATH79_MACH_DIR_632_A1
+++	bool "D-Link DIR-632 rev. A1 support"
+++	select SOC_AR724X
+++	select ATH79_DEV_ETH
+++	select ATH79_DEV_GPIO_BUTTONS
+++	select ATH79_DEV_LEDS_GPIO
+++	select ATH79_DEV_M25P80
+++	select ATH79_DEV_USB
+++	select ATH79_NVRAM
+++
++ config ATH79_MACH_DIR_825_B1
++ 	bool "D-Link DIR-825 rev. B1 board support"
++ 	select SOC_AR71XX
++@@ -751,6 +761,7 @@ config ATH79_DEV_DSA
++ 	def_bool n
++ 
++ config ATH79_DEV_ETH
+++	select AG7240 if ATH79_MACH_DIR_632_A1
++ 	def_bool n
++ 
++ config ATH79_DEV_M25P80
++--- a/arch/mips/ath79/machtypes.h
+++++ b/arch/mips/ath79/machtypes.h
++@@ -38,6 +38,7 @@ enum ath79_mach_type {
++ 	ATH79_MACH_DIR_600_A1,		/* D-Link DIR-600 rev. A1 */
++ 	ATH79_MACH_DIR_615_C1,		/* D-Link DIR-615 rev. C1 */
++ 	ATH79_MACH_DIR_615_E4,		/* D-Link DIR-615 rev. E4 */
+++	ATH79_MACH_DIR_632_A1,		/* D-Link DIR-632 rev. A1 */
++ 	ATH79_MACH_DIR_825_B1,		/* D-Link DIR-825 rev. B1 */
++ 	ATH79_MACH_DIR_825_C1,		/* D-Link DIR-825 rev. C1 */
++ 	ATH79_MACH_DIR_835_A1,		/* D-Link DIR-835 rev. A1 */
++--- a/arch/mips/ath79/Makefile
+++++ b/arch/mips/ath79/Makefile
++@@ -54,6 +54,7 @@ obj-$(CONFIG_ATH79_MACH_CAP4200AG)	+= ma
++ obj-$(CONFIG_ATH79_MACH_DB120)		+= mach-db120.o
++ obj-$(CONFIG_ATH79_MACH_DIR_600_A1)	+= mach-dir-600-a1.o
++ obj-$(CONFIG_ATH79_MACH_DIR_615_C1)	+= mach-dir-615-c1.o
+++obj-$(CONFIG_ATH79_MACH_DIR_632_A1)	+= mach-dir-632-a1.o
++ obj-$(CONFIG_ATH79_MACH_DIR_825_B1)	+= mach-dir-825-b1.o
++ obj-$(CONFIG_ATH79_MACH_DIR_825_C1)	+= mach-dir-825-c1.o
++ obj-$(CONFIG_ATH79_MACH_EW_DORIN)	+= mach-ew-dorin.o
+diff --git a/target/linux/ar71xx/patches-3.8/902-MIPS-ath79-ar7274-gpio-functions.patch b/target/linux/ar71xx/patches-3.8/902-MIPS-ath79-ar7274-gpio-functions.patch
+new file mode 100644
+index 0000000..9ea2276
+--- /dev/null
++++ b/target/linux/ar71xx/patches-3.8/902-MIPS-ath79-ar7274-gpio-functions.patch
+@@ -0,0 +1,26 @@
++--- a/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
+++++ b/arch/mips/include/asm/mach-ath79/ar71xx_regs.h
++@@ -672,8 +672,23 @@
++ #define AR71XX_GPIO_FUNC_USB_OC_EN		BIT(4)
++ #define AR71XX_GPIO_FUNC_USB_CLK_EN		BIT(0)
++ 
+++#define AR724X_GPIO_FUNCTION_SPDIF2TCK_EN       BIT(31)
+++#define AR724X_GPIO_FUNCTION_SPDIF_EN           BIT(30)
+++#define AR724X_GPIO_FUNCTION_I2S_GPIO_18_22_EN  BIT(29)
+++#define AR724X_GPIO_FUNCTION_I2S_REFCLKEN       BIT(28)
+++#define AR724X_GPIO_FUNCTION_I2S_MCKEN          BIT(27)
+++#define AR724X_GPIO_FUNCTION_I2S0_EN            BIT(26)
+++#define AR724X_GPIO_FUNCTION_ETH_SWITCH_LED_DUPL_EN BIT(25)
+++#define AR724X_GPIO_FUNCTION_ETH_SWITCH_LED_COLL    BIT(24)
+++#define AR724X_GPIO_FUNCTION_ETH_SWITCH_LED_ACTV    BIT(23)
+++#define AR724X_GPIO_FUNCTION_PLL_SHIFT_EN       BIT(22)
+++#define AR724X_GPIO_FUNCTION_EXT_MDIO_SEL       BIT(21)
+++#define AR724X_GPIO_FUNCTION_CLK_OBS6_ENABLE    BIT(20)
++ #define AR724X_GPIO_FUNC_GE0_MII_CLK_EN		BIT(19)
++ #define AR724X_GPIO_FUNC_SPI_EN			BIT(18)
+++#define AR724X_GPIO_FUNCTION_DDR_DQOE_EN        BIT(17)
+++#define AR724X_GPIO_FUNCTION_PCIEPHY_TST_EN     BIT(16)
+++#define AR724X_GPIO_FUNCTION_S26_UART_DISABLE   BIT(15)
++ #define AR724X_GPIO_FUNC_SPI_CS_EN2		BIT(14)
++ #define AR724X_GPIO_FUNC_SPI_CS_EN1		BIT(13)
++ #define AR724X_GPIO_FUNC_CLK_OBS5_EN		BIT(12)
