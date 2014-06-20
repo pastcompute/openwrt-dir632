@@ -1,3 +1,17 @@
+It seems that very intermittently there is some interest in this, thanks for that.
+
+Sorry, I am not actively working on this, and it is too hard to walk 
+beginners through applying the patch against a now old OpenWRT version.
+
+There are instructions still on the OpenWRT wiki.
+
+I am hopeful that now it looks like OpenWRT is adding device tree with various
+MIPS devices it might be a lot easier to add support for this, but it is not 
+currently a priority for me and I can use DDWRT or NeBSD with this device.
+
+Maybe I'll get back to it some day...
+
+
 This patch adds support for the D-link DIR 632 router (hardware version A1)
 
 Signed-off-by: Andrew McDonnell <bugs@andrewmcdonnell.net>
